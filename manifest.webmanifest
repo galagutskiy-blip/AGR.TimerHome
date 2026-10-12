@@ -1,26 +1,38 @@
 {
-  "name": "МКС: Таймер смены + счётчик",
+  "name": "МКС Таймер смены + счётчик",
   "short_name": "МКС Таймер",
-  "description": "Таймер смены, счётчик заработка и расписание перерывов.",
-  "lang": "ru",
+  "description": "Таймер смены, счётчик заработка и график смен — работает офлайн",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#f0f2f5",
   "theme_color": "#3498db",
+  "lang": "ru",
   "icons": [
     {
       "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
