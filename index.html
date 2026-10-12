@@ -10,8 +10,9 @@
     <meta name="apple-mobile-web-app-title" content="МКС Таймер">
     <meta name="description" content="Таймер смены, счётчик заработка и график смен — офлайн">
     <title>⏱️ МКС: Таймер смены + счётчик</title>
-    <link rel="manifest" href='data:application/manifest+json,{"name":"МКС Таймер смены","short_name":"МКС Таймер","start_url":"./","display":"standalone","background_color":"%23f0f2f5","theme_color":"%233498db","orientation":"portrait","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27%3E%3Crect width=%27192%27 height=%27192%27 rx=%2732%27 fill=%27%233498db%27/%3E%3Ctext x=%2796%27 y=%27125%27 font-size=%27100%27 text-anchor=%27middle%27%3E⏱️%3C/text%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}'>
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%233498db'/%3E%3Ctext x='96' y='125' font-size='100' text-anchor='middle'%3E⏱️%3C/text%3E%3C/svg%3E">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; }
@@ -1240,8 +1241,6 @@
         }
 
         function setupFirstFullscreenAttempt() {
-            // Пытаемся войти в полноэкранный режим при первом взаимодействии
-            // (браузеры требуют жест пользователя)
             const tryFullscreen = function() {
                 if (!document.fullscreenElement && !document.webkitFullscreenElement) {
                     const docEl = document.documentElement;
@@ -2740,6 +2739,17 @@
             setupSwipeOnGrid();
             applyAllModalScales();
         })();
+    </script>
+
+    <!-- ===== РЕГИСТРАЦИЯ SERVICE WORKER (ОФЛАЙН-РЕЖИМ) ===== -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js', { scope: './' })
+                .then(reg => console.log('✅ SW зарегистрирован:', reg.scope))
+                .catch(err => console.error('❌ Ошибка SW:', err));
+        });
+    }
     </script>
 </body>
 </html>
