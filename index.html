@@ -395,6 +395,52 @@
         .shift-total-timer + .money-counter-block { margin-top: 0; }
         .money-counter-block.hidden { display: none; }
 
+        /* ===== Блок стажа работы ===== */
+        .work-duration-block {
+            margin: 12px auto 8px auto;
+            padding: 10px 18px;
+            border-radius: 40px;
+            background: rgba(52, 152, 219, 0.08);
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(2px);
+            transition: all 0.3s ease;
+            width: fit-content;
+            max-width: 100%;
+            flex-wrap: wrap;
+        }
+        .work-duration-block .work-duration-label {
+            font-size: 13px;
+            opacity: 0.75;
+            font-weight: 400;
+        }
+        .work-duration-block .work-duration-value {
+            font-weight: 700;
+            font-size: 17px;
+            font-variant-numeric: tabular-nums;
+            color: #2980b9;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+        body.night-shift .work-duration-block {
+            background: rgba(52, 152, 219, 0.06);
+            border-color: rgba(52, 152, 219, 0.15);
+        }
+        body.night-shift .work-duration-block .work-duration-value {
+            color: #74c0fc;
+        }
+        @media (max-width: 420px) {
+            .work-duration-block { font-size: 14px; padding: 8px 14px; gap: 7px; }
+            .work-duration-block .work-duration-label { font-size: 11px; }
+            .work-duration-block .work-duration-value { font-size: 15px; }
+        }
+
         #timer-app .timer-display {
             font-size: 38px; font-weight: 700; text-align: center;
             margin: 12px 0 5px 0; padding: 20px 16px;
@@ -1032,6 +1078,11 @@
             <span class="money-currency">₽</span>
         </div>
 
+        <div class="work-duration-block" id="workDurationBlock">
+            <span class="work-duration-label">📅 Работаю с 10.07.2025:</span>
+            <span class="work-duration-value" id="workDurationValue">--</span>
+        </div>
+
         <div class="shift-info" id="shiftInfo">Смена: --</div>
         <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
@@ -1195,6 +1246,39 @@
             { date: '08-01', year: 1984, name: 'Мой день рождения', relation: 'я', icon: '🎂' }
         ];
 
+        // ===== ОТЧЕТ О СТАЖЕ РАБОТЫ =====
+        const WORK_START_DATE = new Date('2025-07-10T00:00:00');
+
+        function declension(number, one, two, five) {
+            const n = Math.abs(number) % 100;
+            const n1 = n % 10;
+            if (n > 10 && n < 20) return five;
+            if (n1 > 1 && n1 < 5) return two;
+            if (n1 === 1) return one;
+            return five;
+        }
+
+        function updateWorkDuration() {
+            const el = document.getElementById('workDurationValue');
+            if (!el) return;
+            const now = new Date();
+            const diffMs = now - WORK_START_DATE;
+            if (diffMs < 0) { el.textContent = 'ещё не начал'; return; }
+
+            const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const years = Math.floor(totalDays / 365);
+            const months = Math.floor((totalDays % 365) / 30);
+            const days = (totalDays % 365) % 30;
+
+            let result = '';
+            if (years > 0) result += years + ' ' + declension(years, 'год', 'года', 'лет') + ' ';
+            if (months > 0) result += months + ' ' + declension(months, 'месяц', 'месяца', 'месяцев') + ' ';
+            if (days > 0 && years === 0) result += days + ' ' + declension(days, 'день', 'дня', 'дней') + ' ';
+            result += '(' + totalDays + ' ' + declension(totalDays, 'день', 'дня', 'дней') + ')';
+
+            el.textContent = result;
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             startTimer();
             initInternetIndicator();
@@ -1203,8 +1287,10 @@
             checkAndApplyHolidayTheme();
             checkAndStartSeasonEffect();
             updateSchedule();
+            updateWorkDuration();
             if (scheduleInterval) clearInterval(scheduleInterval);
             scheduleInterval = setInterval(updateSchedule, 1000);
+            setInterval(updateWorkDuration, 60000);
             setupFirstFullscreenAttempt();
             console.log('✅ Таймер смены загружен (автономный режим)');
         });
