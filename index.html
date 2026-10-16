@@ -11,8 +11,8 @@
     <meta name="description" content="Таймер смены, счётчик заработка и график смен — офлайн">
     <title>⏱️ МКС: Таймер смены + счётчик</title>
     <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; }
@@ -395,7 +395,6 @@
         .shift-total-timer + .money-counter-block { margin-top: 0; }
         .money-counter-block.hidden { display: none; }
 
-        /* ===== Блок стажа работы ===== */
         .work-duration-block {
             margin: 12px auto 8px auto;
             padding: 10px 18px;
@@ -619,6 +618,24 @@
             --tl-shift2-grad-start: #8ec8ff; --tl-shift2-grad-end: #4a9eff;
             --tl-weekend-grad-start: #eef3fa; --tl-weekend-grad-end: #dfe8f2;
             --tl-track-inner-shadow: inset 0 2px 4px rgba(0, 40, 80, 0.06);
+            --extra1-bg: #fff8e0; --extra1-border: #d4a800;
+            --extra1-shadow: 0 0 0 1px #d4a800;
+            --extra1-label-bg: #f5d742; --extra1-label-text: #6b4f00;
+            --extra1-number: #6b4f00;
+            --extra2-bg: #e5f0ff; --extra2-border: #1a7ae0;
+            --extra2-shadow: 0 0 0 1px #1a7ae0;
+            --extra2-label-bg: #4a9eff; --extra2-label-text: #003b80;
+            --extra2-number: #003b80;
+            --absent-bg: #fee; --absent-border: #e74c3c;
+            --absent-text: #c0392b;
+            --event-bg: #f3e8ff; --event-border: #9b59b6;
+            --event-label-bg: #d8b4fe; --event-label-text: #4a1d6e;
+            --event-number: #6b21a8; --event-conflict: #e74c3c;
+            --progress-bg: #e8edf4; --progress-fill: #2a7de1;
+            --rest-good: #27ae60; --rest-warn: #e67e22; --rest-bad: #c0392b;
+            --rest-bg: #1f2e4a; --rest-text: #ffffff;
+            --bonus-denied: #e74c3c;
+            --save-indicator: #27ae60;
             color: var(--text-primary);
             font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
             background: var(--bg-app); border-radius: 28px;
@@ -655,6 +672,24 @@
             --tl-shift2-grad-start: #1a5a9e; --tl-shift2-grad-end: #4a9eff;
             --tl-weekend-grad-start: #22364d; --tl-weekend-grad-end: #1a2a3d;
             --tl-track-inner-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+            --extra1-bg: #3d2e0a; --extra1-border: #d4a800;
+            --extra1-shadow: 0 0 0 1px #d4a800;
+            --extra1-label-bg: #f5d742; --extra1-label-text: #3d2e0a;
+            --extra1-number: #f5d742;
+            --extra2-bg: #0a2647; --extra2-border: #1a7ae0;
+            --extra2-shadow: 0 0 0 1px #1a7ae0;
+            --extra2-label-bg: #4a9eff; --extra2-label-text: #0a2647;
+            --extra2-number: #7ab8ff;
+            --absent-bg: #3d1a1a; --absent-border: #e74c3c;
+            --absent-text: #ff8a8a;
+            --event-bg: #2d1b3d; --event-border: #9b59b6;
+            --event-label-bg: #7c3aed; --event-label-text: #e9d5ff;
+            --event-number: #c084fc; --event-conflict: #ff6b6b;
+            --progress-bg: #2c4058; --progress-fill: #4a9eff;
+            --rest-good: #2ecc71; --rest-warn: #f39c12; --rest-bad: #e74c3c;
+            --rest-bg: #2c3e50; --rest-text: #ecf0f1;
+            --bonus-denied: #ff6b6b;
+            --save-indicator: #2ecc71;
         }
 
         #shift-schedule-app * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -675,6 +710,10 @@
         #shift-schedule-app .color-dot { width: 14px; height: 14px; border-radius: 6px; flex-shrink: 0; }
         #shift-schedule-app .dot-shift1 { background: #f9eec1; border: 1px solid #e3d09b; }
         #shift-schedule-app .dot-shift2 { background: #c7e0f5; border: 1px solid #8fbad9; }
+        #shift-schedule-app .dot-extra1 { background: #f5d742; border: 2px solid #d4a800; }
+        #shift-schedule-app .dot-extra2 { background: #4a9eff; border: 2px solid #1a7ae0; }
+        #shift-schedule-app .dot-absent { background: #e74c3c; border: 2px solid #c0392b; }
+        #shift-schedule-app .dot-event { background: #9b59b6; border: 2px solid #6b21a8; }
 
         #shift-schedule-app .month-nav {
             display: flex; align-items: center; justify-content: space-between;
@@ -754,6 +793,24 @@
         #shift-schedule-app .weekend-cell .day-number { color: var(--weekend-text); }
         #shift-schedule-app .weekend-cell .shift-label { background: var(--weekend-label-bg); color: var(--weekend-label-text); }
 
+        #shift-schedule-app .extra-shift-1 { border: 2px solid var(--extra1-border) !important; background: var(--extra1-bg) !important; box-shadow: var(--extra1-shadow); }
+        #shift-schedule-app .extra-shift-1 .day-number { color: var(--extra1-number) !important; font-weight: 700; }
+        #shift-schedule-app .extra-shift-1 .shift-label { background: var(--extra1-label-bg) !important; color: var(--extra1-label-text) !important; }
+
+        #shift-schedule-app .extra-shift-2 { border: 2px solid var(--extra2-border) !important; background: var(--extra2-bg) !important; box-shadow: var(--extra2-shadow); }
+        #shift-schedule-app .extra-shift-2 .day-number { color: var(--extra2-number) !important; font-weight: 700; }
+        #shift-schedule-app .extra-shift-2 .shift-label { background: var(--extra2-label-bg) !important; color: var(--extra2-label-text) !important; }
+
+        #shift-schedule-app .absent-cell { border: 2px solid var(--absent-border) !important; background: var(--absent-bg) !important; }
+        #shift-schedule-app .absent-cell .day-number { color: var(--absent-text) !important; font-weight: 700; }
+        #shift-schedule-app .absent-cell .shift-label { background: var(--absent-border) !important; color: #fff !important; }
+
+        #shift-schedule-app .event-cell { border: 2px solid var(--event-border) !important; background: var(--event-bg) !important; box-shadow: 0 0 0 1px var(--event-border); }
+        #shift-schedule-app .event-cell .day-number { color: var(--event-number) !important; font-weight: 700; }
+        #shift-schedule-app .event-cell .shift-label { background: var(--event-label-bg) !important; color: var(--event-label-text) !important; }
+        #shift-schedule-app .event-cell.conflict { border-color: var(--event-conflict) !important; box-shadow: 0 0 0 2px var(--event-conflict); }
+        #shift-schedule-app .event-cell.conflict .shift-label { background: var(--event-conflict) !important; color: #fff !important; }
+
         #shift-schedule-app .today { box-shadow: var(--today-shadow); border-color: var(--today-border); background: var(--today-bg); }
         #shift-schedule-app .today .day-number { color: var(--today-text); font-weight: 700; }
 
@@ -761,20 +818,108 @@
         #shift-schedule-app .day-cell.empty:active { transform: none; background: transparent; }
 
         #shift-schedule-app .stats {
-            display: flex; flex-direction: column; gap: 8px; background: var(--bg-stats);
-            padding: 12px 16px; border-radius: 20px; margin: 10px 0 6px;
-            font-size: 13px; color: var(--text-stats); transition: background 0.2s, color 0.2s;
+            display: flex; flex-direction: column; gap: 10px; background: var(--bg-stats);
+            padding: 12px 16px; border-radius: 20px; margin: 8px 0 6px;
+            font-size: 12px; color: var(--text-stats); transition: background 0.2s, color 0.2s;
         }
-        #shift-schedule-app .stats-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-        #shift-schedule-app .stats-label { display: flex; align-items: center; gap: 4px; font-weight: 500; }
-        #shift-schedule-app .stats-value { font-weight: 700; font-size: 16px; }
+        #shift-schedule-app .stats-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; }
+        #shift-schedule-app .stats-label { display: flex; align-items: center; gap: 4px; font-weight: 500; min-width: 100px; }
+        #shift-schedule-app .stats-value { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 120px; }
+
+        #shift-schedule-app .rest-badge {
+            background: var(--rest-bg); color: var(--rest-text); padding: 2px 12px;
+            border-radius: 30px; font-weight: 600; font-size: 13px; white-space: nowrap;
+            transition: background 0.2s, color 0.2s;
+        }
+        #shift-schedule-app .rest-good { background: var(--rest-good); color: #fff; }
+        #shift-schedule-app .rest-warn { background: var(--rest-warn); color: #fff; }
+        #shift-schedule-app .rest-bad { background: var(--rest-bad); color: #fff; }
+
+        #shift-schedule-app .progress-container { flex: 1; min-width: 80px; height: 8px; background: var(--progress-bg); border-radius: 10px; overflow: hidden; position: relative; transition: background 0.2s; }
+        #shift-schedule-app .progress-fill { height: 100%; border-radius: 10px; transition: width 0.5s ease, background 0.3s; width: 0%; }
+        #shift-schedule-app .progress-fill.good { background: var(--rest-good); }
+        #shift-schedule-app .progress-fill.warn { background: var(--rest-warn); }
+        #shift-schedule-app .progress-fill.bad { background: var(--rest-bad); }
+        #shift-schedule-app .progress-label { font-size: 10px; color: var(--text-muted); min-width: 30px; text-align: right; font-weight: 500; }
+
+        #shift-schedule-app .bonus-denied { color: var(--bonus-denied) !important; font-weight: 700; }
+
+        #shift-schedule-app .events-list { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+        #shift-schedule-app .event-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--event-bg); border: 1px solid var(--event-border);
+            border-radius: 12px; padding: 6px 10px; font-size: 11px; color: var(--event-number);
+        }
+        #shift-schedule-app .event-item .event-date { font-weight: 600; }
+        #shift-schedule-app .event-item .event-time { font-weight: 500; }
+        #shift-schedule-app .event-item .event-del {
+            background: transparent; border: none; color: var(--event-conflict);
+            font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1;
+        }
 
         #shift-schedule-app .footer { margin-top: 10px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: 10px; color: var(--text-muted); transition: color 0.2s; }
+
+        #shift-schedule-app .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--overlay-bg); backdrop-filter: var(--overlay-blur);
+            justify-content: center; align-items: center; z-index: 1001;
+            transition: background 0.2s;
+            overflow: hidden;
+        }
+        #shift-schedule-app .modal-overlay.active { display: flex; }
+
+        #shift-schedule-app .modal {
+            background: var(--bg-modal); border-radius: 32px; padding: 24px 20px;
+            max-width: 360px; width: 92%; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            text-align: center; transition: background 0.2s, box-shadow 0.2s;
+            max-height: 90vh; overflow-y: auto;
+        }
+        #shift-schedule-app .modal h2 { font-size: 20px; font-weight: 600; color: var(--text-modal); margin-bottom: 4px; transition: color 0.2s; }
+        #shift-schedule-app .modal p { color: var(--text-modal-secondary); font-size: 14px; margin-bottom: 14px; transition: color 0.2s; }
+
+        #shift-schedule-app .modal .shift-buttons { display: flex; gap: 10px; justify-content: center; margin: 12px 0; flex-wrap: wrap; }
+        #shift-schedule-app .modal .shift-buttons .btn { min-width: 80px; padding: 8px 12px; font-size: 13px; line-height: 1.3; white-space: normal; }
+        #shift-schedule-app .modal .shift-buttons .btn small { font-weight: 400; font-size: 10px; display: block; }
+
+        #shift-schedule-app .modal .btn-group { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+        #shift-schedule-app .modal .btn-group .btn { min-width: 70px; font-size: 12px; padding: 5px 14px; }
+        #shift-schedule-app .modal .btn-group .btn-outline { background: var(--btn-outline-bg); border: 1px solid var(--btn-outline-border); color: var(--btn-outline-text); }
+        #shift-schedule-app .modal .btn-group .btn-outline:active { background: var(--btn-outline-active); }
+        #shift-schedule-app .modal .btn-absent { background: #e74c3c; color: #fff; border: 2px solid #c0392b; }
+        #shift-schedule-app .modal .btn-absent:active { background: #c0392b; }
+        #shift-schedule-app .modal .btn-event { background: #9b59b6; color: #fff; border: 2px solid #6b21a8; }
+        #shift-schedule-app .modal .btn-event:active { background: #6b21a8; }
+
+        #shift-schedule-app .event-form { display: flex; flex-direction: column; gap: 10px; margin: 14px 0 6px; text-align: left; }
+        #shift-schedule-app .event-form label { font-size: 12px; font-weight: 600; color: var(--text-modal-secondary); }
+        #shift-schedule-app .event-form input {
+            width: 100%; padding: 8px 12px; border-radius: 12px;
+            border: 1px solid var(--border-light); background: var(--bg-app);
+            color: var(--text-primary); font-size: 14px; font-family: inherit;
+        }
+        #shift-schedule-app .event-form input:focus { outline: 2px solid var(--btn-outline-border); border-color: transparent; }
+        #shift-schedule-app .event-form .row { display: flex; gap: 10px; }
+        #shift-schedule-app .event-form .row > * { flex: 1; }
+
+        #shift-schedule-app .conflict-warning {
+            background: var(--absent-bg); border: 1px solid var(--absent-border);
+            color: var(--absent-text); border-radius: 12px; padding: 8px 12px;
+            font-size: 12px; font-weight: 600; margin: 8px 0;
+        }
+
+        #shift-schedule-app .btn {
+            padding: 6px 16px; border-radius: 30px; border: none; font-weight: 600;
+            font-size: 12px; cursor: pointer; transition: 0.15s, background 0.2s, color 0.2s, border-color 0.2s;
+            white-space: nowrap; user-select: none; -webkit-tap-highlight-color: transparent;
+        }
+        #shift-schedule-app .btn:active { transform: scale(0.95); }
+        #shift-schedule-app .btn-outline { background: var(--btn-outline-bg); border: 1px solid var(--btn-outline-border); color: var(--btn-outline-text); }
+        #shift-schedule-app .btn-outline:active { background: var(--btn-outline-active); }
 
         #shift-schedule-app .timeline-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--overlay-bg); backdrop-filter: var(--overlay-blur);
-            justify-content: center; align-items: center; z-index: 1000;
+            justify-content: center; align-items: center; z-index: 1002;
             transition: background 0.2s;
             overflow: hidden;
         }
@@ -816,6 +961,8 @@
         }
         #shift-schedule-app .timeline-day-block.type-shift1::before { background: linear-gradient(180deg, var(--tl-shift1-grad-start), var(--tl-shift1-grad-end)); }
         #shift-schedule-app .timeline-day-block.type-shift2::before { background: linear-gradient(180deg, var(--tl-shift2-grad-start), var(--tl-shift2-grad-end)); }
+        #shift-schedule-app .timeline-day-block.type-absent::before { background: linear-gradient(180deg, #ff8a8a, #e74c3c); }
+        #shift-schedule-app .timeline-day-block.type-event::before { background: linear-gradient(180deg, #d8b4fe, #9b59b6); }
 
         #shift-schedule-app .timeline-day-block.selected {
             background: var(--bg-card);
@@ -845,6 +992,7 @@
         #shift-schedule-app .timeline-day-shift.shift-1-label { background: linear-gradient(135deg, var(--tl-shift1-grad-start), var(--tl-shift1-grad-end)); color: #6b4f00; }
         #shift-schedule-app .timeline-day-shift.shift-2-label { background: linear-gradient(135deg, var(--tl-shift2-grad-start), var(--tl-shift2-grad-end)); color: #fff; }
         #shift-schedule-app .timeline-day-shift.weekend-label { background: var(--weekend-label-bg); color: var(--weekend-label-text); }
+        #shift-schedule-app .timeline-day-shift.absent-label { background: linear-gradient(135deg, #ff8a8a, #e74c3c); color: #fff; }
 
         #shift-schedule-app .timeline-track {
             position: relative;
@@ -862,6 +1010,15 @@
                 var(--tl-weekend-grad-start) 6px,
                 var(--tl-weekend-grad-end) 6px,
                 var(--tl-weekend-grad-end) 12px
+            );
+        }
+        #shift-schedule-app .timeline-track.track-absent {
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(231, 76, 60, 0.15),
+                rgba(231, 76, 60, 0.15) 6px,
+                rgba(231, 76, 60, 0.28) 6px,
+                rgba(231, 76, 60, 0.28) 12px
             );
         }
 
@@ -899,6 +1056,19 @@
             box-shadow: 0 2px 6px rgba(26, 122, 224, 0.35), inset 0 1px 0 rgba(255,255,255,0.4);
             border-top: 1px solid rgba(26, 122, 224, 0.6);
             border-bottom: 1px solid rgba(26, 122, 224, 0.6);
+        }
+        #shift-schedule-app .timeline-segment.absent {
+            background: linear-gradient(180deg, #ff8a8a, #e74c3c);
+            opacity: 0.85;
+        }
+        #shift-schedule-app .timeline-segment.event {
+            background: linear-gradient(180deg, #d8b4fe, #9b59b6);
+            opacity: 0.95;
+            top: 7px; bottom: 7px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(155, 89, 182, 0.45), inset 0 1px 0 rgba(255,255,255,0.4);
+            border: 1px solid rgba(107, 33, 168, 0.7);
+            z-index: 3;
         }
 
         #shift-schedule-app .timeline-now-line {
@@ -974,6 +1144,7 @@
         }
         #shift-schedule-app .timeline-legend-dot.shift1 { background: linear-gradient(135deg, var(--tl-shift1-grad-start), var(--tl-shift1-grad-end)); }
         #shift-schedule-app .timeline-legend-dot.shift2 { background: linear-gradient(135deg, var(--tl-shift2-grad-start), var(--tl-shift2-grad-end)); }
+        #shift-schedule-app .timeline-legend-dot.event { background: linear-gradient(135deg, #d8b4fe, #9b59b6); }
         #shift-schedule-app .timeline-legend-dot.free {
             background: repeating-linear-gradient(
                 45deg,
@@ -991,16 +1162,10 @@
             justify-content: center;
         }
 
-        #shift-schedule-app .btn {
-            padding: 6px 16px; border-radius: 30px; border: none; font-weight: 600;
-            font-size: 12px; cursor: pointer; transition: 0.15s, background 0.2s, color 0.2s, border-color 0.2s;
-            white-space: nowrap; user-select: none; -webkit-tap-highlight-color: transparent;
+        #shift-schedule-app .modal-overlay .modal,
+        #shift-schedule-app .timeline-overlay .timeline-modal {
+            transform-origin: center center;
         }
-        #shift-schedule-app .btn:active { transform: scale(0.95); }
-        #shift-schedule-app .btn-outline { background: var(--btn-outline-bg); border: 1px solid var(--btn-outline-border); color: var(--btn-outline-text); }
-        #shift-schedule-app .btn-outline:active { background: var(--btn-outline-active); }
-
-        #shift-schedule-app .timeline-overlay .timeline-modal { transform-origin: center center; }
 
         #shift-schedule-app .calendar-grid.swiping { transition: none; }
         #shift-schedule-app .calendar-grid.swipe-out-left { transform: translateX(-30%); opacity: 0; }
@@ -1016,8 +1181,9 @@
             #shift-schedule-app .shift-label { font-size: 7px; padding: 1px 4px; }
             #shift-schedule-app .day-name { font-size: 10px; height: 22px; }
             #shift-schedule-app .calendar-grid { gap: 3px; }
-            #shift-schedule-app .stats { padding: 10px 12px; font-size: 12px; }
-            #shift-schedule-app .stats-value { font-size: 15px; }
+            #shift-schedule-app .stats { padding: 10px 12px; gap: 8px; }
+            #shift-schedule-app .stats-label { min-width: 80px; font-size: 11px; }
+            #shift-schedule-app .stats-value { min-width: 100px; }
             #shift-schedule-app .timeline-hour-mark { font-size: 6px; letter-spacing: -0.5px; }
             #shift-schedule-app .timeline-hour-mark.major { font-size: 7.5px; }
             #shift-schedule-app .timeline-day-block { padding: 8px 10px 10px 14px; }
@@ -1150,55 +1316,153 @@
         <ul class="schedule-list" id="scheduleList"></ul>
     </div>
 
-    <!-- ===== ГРАФИК СМЕН (встроен в самый низ) ===== -->
+    <!-- ===== ГРАФИК СМЕН (ВСТРОЕННЫЙ МОДУЛЬ) ===== -->
     <div id="shift-schedule-app">
         <div class="subhead">
             <div>
-                <h1>📋 График</h1>
-                <div class="hint">Удерживайте дату для шкалы · свайп для смены месяца</div>
+                <h1>📋 График смен + подработки + мероприятия</h1>
+                <div class="hint">Нажмите на дату · удерживайте для шкалы · свайп для смены месяца</div>
             </div>
             <div class="legend">
-                <div class="legend-item"><span class="color-dot dot-shift1"></span>1 смена</div>
-                <div class="legend-item"><span class="color-dot dot-shift2"></span>2 смена</div>
+                <div class="legend-item"><span class="color-dot dot-shift1"></span>1</div>
+                <div class="legend-item"><span class="color-dot dot-shift2"></span>2</div>
+                <div class="legend-item"><span class="color-dot dot-extra1"></span>✧1</div>
+                <div class="legend-item"><span class="color-dot dot-extra2"></span>✧2</div>
+                <div class="legend-item"><span class="color-dot dot-absent"></span>✕</div>
+                <div class="legend-item"><span class="color-dot dot-event"></span>🎉</div>
             </div>
         </div>
 
         <div class="month-nav">
-            <button class="month-nav-btn" id="shiftPrevMonth" title="Предыдущий месяц">◀</button>
-            <div class="month-nav-title" id="shiftMonthTitle">Сентябрь 2026<small>30 дней · начало — ВТ</small></div>
-            <button class="month-nav-btn" id="shiftNextMonth" title="Следующий месяц">▶</button>
+            <button class="month-nav-btn" id="prevMonth" title="Предыдущий месяц">◀</button>
+            <div class="month-nav-title" id="monthTitle">Сентябрь 2026<small>30 дней · начало — ВТ</small></div>
+            <button class="month-nav-btn" id="nextMonth" title="Следующий месяц">▶</button>
         </div>
 
-        <div class="stats" id="shiftStatsPanel">
+        <div class="stats" id="statsPanel">
             <div class="stats-row">
-                <span class="stats-label">📊 Смен в месяце:</span>
-                <span class="stats-value" id="shiftShiftsCount">0</span>
+                <span class="stats-label">📊 Подработок:</span>
+                <span class="stats-value">
+                    <span id="extraCount" style="font-weight:600;font-size:15px;">0</span>
+                </span>
             </div>
-            <div class="stats-row">
-                <span class="stats-label">⏱ Часов в месяце:</span>
-                <span class="stats-value" id="shiftHoursCount">0 ч</span>
+
+            <div class="stats-row" id="restBeforeRow" style="display:none;">
+                <span class="stats-label">⏳ Отдых ДО:</span>
+                <span class="stats-value">
+                    <span id="restBeforeDisplay" style="font-weight:600;font-size:14px;min-width:50px;">—</span>
+                    <div class="progress-container">
+                        <div class="progress-fill" id="progressBefore" style="width:0%;"></div>
+                    </div>
+                    <span class="progress-label" id="progressBeforeLabel">0%</span>
+                </span>
+            </div>
+
+            <div class="stats-row" id="restAfterRow" style="display:none;">
+                <span class="stats-label">⏳ Отдых ПОСЛЕ:</span>
+                <span class="stats-value">
+                    <span id="restAfterDisplay" style="font-weight:600;font-size:14px;min-width:50px;">—</span>
+                    <div class="progress-container">
+                        <div class="progress-fill" id="progressAfter" style="width:0%;"></div>
+                    </div>
+                    <span class="progress-label" id="progressAfterLabel">0%</span>
+                </span>
+            </div>
+
+            <div class="stats-row" id="nextShiftRow" style="display:none;">
+                <span class="stats-label">📌 Следующая:</span>
+                <span class="stats-value" id="nextShiftDisplay" style="font-size:12px;font-weight:500;">—</span>
+            </div>
+
+            <div class="stats-row" id="eventRestBeforeRow" style="display:none;">
+                <span class="stats-label">🎉 Отдых до меропр.:</span>
+                <span class="stats-value">
+                    <span id="eventRestBeforeDisplay" style="font-weight:600;font-size:14px;min-width:50px;">—</span>
+                    <div class="progress-container">
+                        <div class="progress-fill" id="progressEventBefore" style="width:0%;"></div>
+                    </div>
+                    <span class="progress-label" id="progressEventBeforeLabel">0%</span>
+                </span>
+            </div>
+
+            <div class="stats-row" id="eventRestAfterRow" style="display:none;">
+                <span class="stats-label">🎉 Отдых после меропр.:</span>
+                <span class="stats-value">
+                    <span id="eventRestAfterDisplay" style="font-weight:600;font-size:14px;min-width:50px;">—</span>
+                    <div class="progress-container">
+                        <div class="progress-fill" id="progressEventAfter" style="width:0%;"></div>
+                    </div>
+                    <span class="progress-label" id="progressEventAfterLabel">0%</span>
+                </span>
+            </div>
+
+            <div class="stats-row" id="eventsListRow" style="display:none;">
+                <span class="stats-label">📋 Мероприятия:</span>
+                <span class="stats-value">
+                    <div class="events-list" id="eventsList"></div>
+                </span>
+            </div>
+
+            <div class="stats-row" id="bonusRow">
+                <span class="stats-label">💰 Трудовая надбавка:</span>
+                <span class="stats-value" id="bonusDisplay" style="font-weight:600;font-size:15px;">0 ₽</span>
             </div>
         </div>
 
-        <div class="calendar-grid" id="shiftCalendarGrid"></div>
+        <div class="calendar-grid" id="calendarGrid"></div>
 
         <div class="footer">
             <span>Основной график</span>
-            <span>🟨 1 смена · 🟦 2 смена</span>
+            <span>🟨 1 смена · 🟦 2 смена · 🟪 мероприятие · ✕ отсутствие</span>
         </div>
 
-        <div class="timeline-overlay" id="shiftTimelineOverlay">
-            <div class="timeline-modal" id="shiftTimelineModal">
+        <!-- Модалка редактирования дня -->
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal" id="editModal">
+                <h2>✏️ Редактировать день</h2>
+                <p id="modalDateText">На <strong>число</strong> сентября</p>
+                <div class="shift-buttons">
+                    <button class="btn" id="modalShift1" style="background:#f9eec1;color:#6b5a2e;border:1px solid #e3d09b;">1 смена <small>7:20–19:20</small></button>
+                    <button class="btn" id="modalShift2" style="background:#c7e0f5;color:#1f4970;border:1px solid #8fbad9;">2 смена <small>19:20–7:20</small></button>
+                    <button class="btn btn-absent" id="modalAbsent">✕ Отсутствовал</button>
+                    <button class="btn btn-event" id="modalEvent">🎉 Мероприятие</button>
+                </div>
+
+                <div id="eventFormContainer" style="display:none;">
+                    <div class="event-form">
+                        <label for="eventTime">Время начала</label>
+                        <input type="time" id="eventTime" value="19:00">
+                        <label for="eventDuration">Длительность (часов)</label>
+                        <input type="number" id="eventDuration" value="3" min="0.5" max="24" step="0.5">
+                    </div>
+                    <div id="eventConflictWarning" class="conflict-warning" style="display:none;"></div>
+                    <div class="btn-group" style="margin-top:10px;">
+                        <button class="btn btn-outline" id="modalEventSave">💾 Сохранить</button>
+                        <button class="btn btn-outline" id="modalEventCancel">Отмена</button>
+                    </div>
+                </div>
+
+                <div class="btn-group" id="mainBtnGroup">
+                    <button class="btn btn-outline" id="modalRemove">🗑️ Сбросить</button>
+                    <button class="btn btn-outline" id="modalCancel">Отмена</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модалка с 24-часовой шкалой -->
+        <div class="timeline-overlay" id="timelineOverlay">
+            <div class="timeline-modal" id="timelineModal">
                 <h2>🕐 Рабочие часы</h2>
-                <p id="shiftTimelineDateText">На <strong>число</strong> сентября</p>
-                <div id="shiftTimelineContainer"></div>
+                <p id="timelineDateText">На <strong>число</strong> сентября</p>
+                <div id="timelineContainer"></div>
                 <div class="timeline-legend">
                     <div class="timeline-legend-item"><span class="timeline-legend-dot shift1"></span> 1 смена (7:20–19:20)</div>
                     <div class="timeline-legend-item"><span class="timeline-legend-dot shift2"></span> 2 смена (19:20–7:20)</div>
+                    <div class="timeline-legend-item"><span class="timeline-legend-dot event"></span> Мероприятие</div>
                     <div class="timeline-legend-item"><span class="timeline-legend-dot free"></span> Выходной</div>
                 </div>
                 <div class="timeline-close">
-                    <button class="btn btn-outline" id="shiftTimelineClose">Закрыть</button>
+                    <button class="btn btn-outline" id="timelineClose">Закрыть</button>
                 </div>
             </div>
         </div>
@@ -1207,7 +1471,6 @@
     <script>
         // ===== НАСТРОЙКА ВКОНТАКТЕ =====
         const VK_GROUP_URL = 'https://vk.com/jmkaluga';
-        // =================================
 
         let timerInterval = null;
         let scheduleInterval = null;
@@ -1246,7 +1509,6 @@
             { date: '08-01', year: 1984, name: 'Мой день рождения', relation: 'я', icon: '🎂' }
         ];
 
-        // ===== ОТЧЕТ О СТАЖЕ РАБОТЫ =====
         const WORK_START_DATE = new Date('2025-07-10T00:00:00');
 
         function declension(number, one, two, five) {
@@ -1264,18 +1526,15 @@
             const now = new Date();
             const diffMs = now - WORK_START_DATE;
             if (diffMs < 0) { el.textContent = 'ещё не начал'; return; }
-
             const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
             const years = Math.floor(totalDays / 365);
             const months = Math.floor((totalDays % 365) / 30);
             const days = (totalDays % 365) % 30;
-
             let result = '';
             if (years > 0) result += years + ' ' + declension(years, 'год', 'года', 'лет') + ' ';
             if (months > 0) result += months + ' ' + declension(months, 'месяц', 'месяца', 'месяцев') + ' ';
             if (days > 0 && years === 0) result += days + ' ' + declension(days, 'день', 'дня', 'дней') + ' ';
             result += '(' + totalDays + ' ' + declension(totalDays, 'день', 'дня', 'дней') + ')';
-
             el.textContent = result;
         }
 
@@ -1291,73 +1550,25 @@
             if (scheduleInterval) clearInterval(scheduleInterval);
             scheduleInterval = setInterval(updateSchedule, 1000);
             setInterval(updateWorkDuration, 60000);
-            setupFirstFullscreenAttempt();
             console.log('✅ Таймер смены загружен (автономный режим)');
         });
 
-        // ===== ФУНКЦИИ ТАЙМЕРА =====
         function openVKGroup() {
             window.open(VK_GROUP_URL, '_blank');
             showCopyNotification('🌐 Открываем ВКонтакте...');
         }
 
-        function toggleFullscreen() {
-            const doc = document;
-            const docEl = document.documentElement;
-            const isFullscreen = doc.fullscreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement;
-            if (!isFullscreen) {
-                if (docEl.requestFullscreen) {
-                    docEl.requestFullscreen().catch(function(err) {
-                        console.log('Не удалось перейти в полноэкранный режим:', err);
-                    });
-                } else if (docEl.webkitRequestFullscreen) {
-                    docEl.webkitRequestFullscreen();
-                } else if (docEl.msRequestFullscreen) {
-                    docEl.msRequestFullscreen();
-                }
-            } else {
-                if (doc.exitFullscreen) {
-                    doc.exitFullscreen();
-                } else if (doc.webkitExitFullscreen) {
-                    doc.webkitExitFullscreen();
-                } else if (doc.msExitFullscreen) {
-                    doc.msExitFullscreen();
-                }
-            }
-        }
-
-        function setupFirstFullscreenAttempt() {
-            const tryFullscreen = function() {
-                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                    const docEl = document.documentElement;
-                    if (docEl.requestFullscreen) {
-                        docEl.requestFullscreen().catch(function() {});
-                    } else if (docEl.webkitRequestFullscreen) {
-                        docEl.webkitRequestFullscreen();
-                    }
-                }
-                document.removeEventListener('click', tryFullscreen);
-                document.removeEventListener('touchstart', tryFullscreen);
-            };
-            document.addEventListener('click', tryFullscreen, { once: true });
-            document.addEventListener('touchstart', tryFullscreen, { once: true });
-        }
-
         function generateSignatureAndCopy() {
             generateSignature();
-            setTimeout(function() {
-                copySignatureToClipboard();
-            }, 50);
+            setTimeout(function() { copySignatureToClipboard(); }, 50);
         }
 
         function copySignatureToClipboard() {
             if (!timerCurrentSignature) generateSignature();
-
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(timerCurrentSignature).then(function() {
                     showCopyNotification('✅ Подпись скопирована в буфер обмена!');
                 }).catch(function(err) {
-                    console.error('Ошибка при копировании через clipboard API: ', err);
                     fallbackCopyToClipboard(timerCurrentSignature);
                 });
             } else {
@@ -1392,70 +1603,32 @@
             textArea.select();
             try {
                 const successful = document.execCommand('copy');
-                if (successful) {
-                    showCopyNotification('✅ Подпись скопирована в буфер обмена!');
-                } else {
-                    showCopyNotification('❌ Не удалось скопировать подпись');
-                }
+                if (successful) showCopyNotification('✅ Подпись скопирована в буфер обмена!');
+                else showCopyNotification('❌ Не удалось скопировать подпись');
             } catch (err) {
-                console.error('Ошибка при альтернативном копировании: ', err);
                 showCopyNotification('❌ Не удалось скопировать подпись');
             }
             document.body.removeChild(textArea);
         }
 
         function getNextShiftForGalagutskySignature(now) {
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const totalMinutes = hours * 60 + minutes;
-            let shiftType;
-            let shiftEmoji;
-            if (totalMinutes >= 380 && totalMinutes < 1100) {
-                shiftType = '1 смена';
-                shiftEmoji = '☀️';
-            } else {
-                shiftType = '2 смена';
-                shiftEmoji = '🌙';
-            }
-            return {
-                shiftType: shiftType,
-                shiftEmoji: shiftEmoji,
-                date: new Date(now)
-            };
+            const totalMinutes = now.getHours() * 60 + now.getMinutes();
+            let shiftType, shiftEmoji;
+            if (totalMinutes >= 380 && totalMinutes < 1100) { shiftType = '1 смена'; shiftEmoji = '☀️'; }
+            else { shiftType = '2 смена'; shiftEmoji = '🌙'; }
+            return { shiftType, shiftEmoji, date: new Date(now) };
         }
 
         function getShiftTimeRange(now) {
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const totalMinutes = hours * 60 + minutes;
-            let start, end;
-            if (totalMinutes >= 380 && totalMinutes < 1100) {
-                start = '07:20';
-                end = '19:20';
-            } else {
-                start = '19:20';
-                end = '07:20';
-            }
-            return { start, end };
+            const totalMinutes = now.getHours() * 60 + now.getMinutes();
+            if (totalMinutes >= 380 && totalMinutes < 1100) return { start: '07:20', end: '19:20' };
+            else return { start: '19:20', end: '07:20' };
         }
 
         function getNextShiftForGalagutskayaSignature(now) {
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const totalMinutes = hours * 60 + minutes;
-            let shiftTime;
-            let shiftEmoji;
-            if (totalMinutes >= 380 && totalMinutes < 1100) {
-                shiftTime = '07:20-19:20';
-                shiftEmoji = '☀️';
-            } else {
-                shiftTime = '19:20-07:20';
-                shiftEmoji = '🌙';
-            }
-            return {
-                shiftTime: shiftTime,
-                shiftEmoji: shiftEmoji
-            };
+            const totalMinutes = now.getHours() * 60 + now.getMinutes();
+            if (totalMinutes >= 380 && totalMinutes < 1100) return { shiftTime: '07:20-19:20', shiftEmoji: '☀️' };
+            else return { shiftTime: '19:20-07:20', shiftEmoji: '🌙' };
         }
 
         function getMoneyMax(shiftType, isPartTime) {
@@ -1467,26 +1640,18 @@
 
         function updateMoneyCounter(now) {
             const moneyBlock = document.getElementById('moneyCounterBlock');
-            if (currentSignatureType === 2) {
-                if (moneyBlock) moneyBlock.classList.add('hidden');
-                return;
-            }
+            if (currentSignatureType === 2) { if (moneyBlock) moneyBlock.classList.add('hidden'); return; }
             if (moneyBlock) moneyBlock.classList.remove('hidden');
-
             const shiftInfo = getCurrentShiftInfo(now);
             const isPartTime = document.getElementById('partTimeCheckbox').checked;
             const maxMoney = getMoneyMax(shiftInfo.shift, isPartTime);
             const el = document.getElementById('moneyAmount');
             if (!el) return;
-            if (!shiftInfo.isActive || !shiftInfo.start || !shiftInfo.end) {
-                el.textContent = '0';
-                return;
-            }
+            if (!shiftInfo.isActive || !shiftInfo.start || !shiftInfo.end) { el.textContent = '0'; return; }
             const total = shiftInfo.end - shiftInfo.start;
             const elapsed = Math.max(0, now - shiftInfo.start);
             const progress = Math.min(1, elapsed / total);
-            const currentMoney = Math.round(progress * maxMoney);
-            el.textContent = currentMoney;
+            el.textContent = Math.round(progress * maxMoney);
         }
 
         function generateSignature() {
@@ -1494,31 +1659,19 @@
             const isPartTime = document.getElementById('partTimeCheckbox').checked;
             const shiftRange = getShiftTimeRange(now);
             const partTimeSuffix = isPartTime ? `, подработка ${shiftRange.start} - ${shiftRange.end}` : '';
-
             if (currentSignatureType === 1) {
-                const nextShiftInfo = getNextShiftForGalagutskySignature(now);
-                const shiftType = nextShiftInfo.shiftType;
-                const shiftEmoji = nextShiftInfo.shiftEmoji;
-                const dateForSignature = nextShiftInfo.date;
-                const day = formatTime(dateForSignature.getDate());
-                const month = formatTime(dateForSignature.getMonth() + 1);
-                const year = dateForSignature.getFullYear();
-                const formattedDate = `${day}.${month}.${year}`;
-                timerCurrentSignature = `${shiftEmoji} Галагуцкий Е.В. (сварщик МКС), ${shiftType}, ${formattedDate}${partTimeSuffix}`;
+                const info = getNextShiftForGalagutskySignature(now);
+                const d = info.date;
+                timerCurrentSignature = `${info.shiftEmoji} Галагуцкий Е.В. (сварщик МКС), ${info.shiftType}, ${formatTime(d.getDate())}.${formatTime(d.getMonth()+1)}.${d.getFullYear()}${partTimeSuffix}`;
             } else {
-                const shiftInfo = getNextShiftForGalagutskayaSignature(now);
-                const shiftEmoji = shiftInfo.shiftEmoji;
+                const info = getNextShiftForGalagutskayaSignature(now);
                 const day = formatTime(now.getDate());
                 const month = formatTime(now.getMonth() + 1);
                 const year = now.getFullYear();
-                const formattedDate = `${day}.${month}.${year}`;
-                timerCurrentSignature = `${shiftEmoji} Галагуцкая Светлана Викторовна\n${formattedDate}\nBr2\n${shiftInfo.shiftTime}\nЛогистика\nНа смене.${isPartTime ? `\nПодработка ${shiftRange.start} - ${shiftRange.end}` : ''}`;
+                timerCurrentSignature = `${info.shiftEmoji} Галагуцкая Светлана Викторовна\n${day}.${month}.${year}\nBr2\n${info.shiftTime}\nЛогистика\nНа смене.${isPartTime ? `\nПодработка ${shiftRange.start} - ${shiftRange.end}` : ''}`;
             }
             const signatureOutput = document.getElementById('signatureOutput');
-            if (signatureOutput) {
-                signatureOutput.textContent = timerCurrentSignature;
-                signatureOutput.style.display = 'block';
-            }
+            if (signatureOutput) { signatureOutput.textContent = timerCurrentSignature; signatureOutput.style.display = 'block'; }
             const copyBtn = document.getElementById('copyBtn');
             if (copyBtn) copyBtn.style.display = 'block';
             if (signatureOutput) signatureOutput.scrollIntoView({ behavior: 'smooth' });
@@ -1527,155 +1680,119 @@
         }
 
         function formatTime(num) { return num < 10 ? '0' + num : num; }
-
-        function createDateTime(date, hours, minutes) {
-            const newDate = new Date(date);
-            newDate.setHours(hours, minutes, 0, 0);
-            return newDate;
-        }
-
+        function createDateTime(date, hours, minutes) { const d = new Date(date); d.setHours(hours, minutes, 0, 0); return d; }
         function calculateTimeRemaining(now, target) {
             const diff = target - now;
             if (diff <= 0) return '00:00:00';
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            return `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+            const h = Math.floor(diff / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            return `${formatTime(h)}:${formatTime(m)}:${formatTime(s)}`;
         }
 
         function getCurrentShiftInfo(now) {
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const totalMinutes = hours * 60 + minutes;
-            const today = new Date(now);
-            today.setHours(0, 0, 0, 0);
-
+            const totalMinutes = now.getHours() * 60 + now.getMinutes();
+            const today = new Date(now); today.setHours(0, 0, 0, 0);
             if (totalMinutes >= 440 && totalMinutes < 1160) {
-                const shiftStart = new Date(today);
-                shiftStart.setHours(7, 20, 0, 0);
-                const shiftEnd = new Date(today);
-                shiftEnd.setHours(19, 20, 0, 0);
-                return { isActive: true, shift: "day", shiftText: "Дневная смена: 07:20 - 19:20", start: shiftStart, end: shiftEnd };
+                const start = new Date(today); start.setHours(7, 20, 0, 0);
+                const end = new Date(today); end.setHours(19, 20, 0, 0);
+                return { isActive: true, shift: "day", shiftText: "Дневная смена: 07:20 - 19:20", start, end };
             } else if (totalMinutes >= 1160 && totalMinutes < 1440) {
-                const shiftStart = new Date(today);
-                shiftStart.setHours(19, 20, 0, 0);
-                const shiftEnd = new Date(today);
-                shiftEnd.setDate(shiftEnd.getDate() + 1);
-                shiftEnd.setHours(7, 20, 0, 0);
-                return { isActive: true, shift: "night", shiftText: "Ночная смена: 19:20 - 07:20", start: shiftStart, end: shiftEnd };
+                const start = new Date(today); start.setHours(19, 20, 0, 0);
+                const end = new Date(today); end.setDate(end.getDate() + 1); end.setHours(7, 20, 0, 0);
+                return { isActive: true, shift: "night", shiftText: "Ночная смена: 19:20 - 07:20", start, end };
             } else if (totalMinutes >= 0 && totalMinutes < 440) {
-                const shiftStart = new Date(today);
-                shiftStart.setDate(shiftStart.getDate() - 1);
-                shiftStart.setHours(19, 20, 0, 0);
-                const shiftEnd = new Date(today);
-                shiftEnd.setHours(7, 20, 0, 0);
-                return { isActive: true, shift: "night", shiftText: "Ночная смена: 19:20 - 07:20", start: shiftStart, end: shiftEnd };
+                const start = new Date(today); start.setDate(start.getDate() - 1); start.setHours(19, 20, 0, 0);
+                const end = new Date(today); end.setHours(7, 20, 0, 0);
+                return { isActive: true, shift: "night", shiftText: "Ночная смена: 19:20 - 07:20", start, end };
             }
             return { isActive: false, shift: "none", shiftText: "Между сменами", start: null, end: null };
         }
 
         function getDayShiftEventsGalagutsky(now) {
-            const today = new Date(now);
-            today.setHours(0, 0, 0, 0);
-            const events = [
-                { start: createDateTime(today, 7, 20), end: createDateTime(today, 9, 40), description: "работы до первого перерыва", type: "work" },
-                { start: createDateTime(today, 9, 40), end: createDateTime(today, 9, 50), description: "первого перерыва", type: "break" },
-                { start: createDateTime(today, 9, 50), end: createDateTime(today, 11, 40), description: "работы до обеда", type: "work" },
-                { start: createDateTime(today, 11, 40), end: createDateTime(today, 12, 10), description: "обеда", type: "meal" },
-                { start: createDateTime(today, 12, 10), end: createDateTime(today, 14, 40), description: "работы до второго перерыва", type: "work" },
-                { start: createDateTime(today, 14, 40), end: createDateTime(today, 14, 50), description: "второго перерыва", type: "break" },
-                { start: createDateTime(today, 14, 50), end: createDateTime(today, 17, 0), description: "работы до третьего перерыва", type: "work" },
-                { start: createDateTime(today, 17, 0), end: createDateTime(today, 17, 10), description: "третьего перерыва", type: "break" },
-                { start: createDateTime(today, 17, 10), end: createDateTime(today, 19, 20), description: "работы до конца смены", type: "work" }
+            const t = new Date(now); t.setHours(0, 0, 0, 0);
+            return [
+                { start: createDateTime(t, 7, 20), end: createDateTime(t, 9, 40), description: "работы до первого перерыва", type: "work" },
+                { start: createDateTime(t, 9, 40), end: createDateTime(t, 9, 50), description: "первого перерыва", type: "break" },
+                { start: createDateTime(t, 9, 50), end: createDateTime(t, 11, 40), description: "работы до обеда", type: "work" },
+                { start: createDateTime(t, 11, 40), end: createDateTime(t, 12, 10), description: "обеда", type: "meal" },
+                { start: createDateTime(t, 12, 10), end: createDateTime(t, 14, 40), description: "работы до второго перерыва", type: "work" },
+                { start: createDateTime(t, 14, 40), end: createDateTime(t, 14, 50), description: "второго перерыва", type: "break" },
+                { start: createDateTime(t, 14, 50), end: createDateTime(t, 17, 0), description: "работы до третьего перерыва", type: "work" },
+                { start: createDateTime(t, 17, 0), end: createDateTime(t, 17, 10), description: "третьего перерыва", type: "break" },
+                { start: createDateTime(t, 17, 10), end: createDateTime(t, 19, 20), description: "работы до конца смены", type: "work" }
             ];
-            return events;
         }
 
         function getNightShiftEventsGalagutsky(now) {
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const totalMinutes = hours * 60 + minutes;
-            const today = new Date(now);
-            today.setHours(0, 0, 0, 0);
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-
+            const totalMinutes = now.getHours() * 60 + now.getMinutes();
+            const t = new Date(now); t.setHours(0, 0, 0, 0);
+            const tm = new Date(t); tm.setDate(tm.getDate() + 1);
             if (totalMinutes >= 1160) {
-                const events = [
-                    { start: createDateTime(today, 19, 20), end: createDateTime(today, 21, 30), description: "работы до первого перерыва", type: "work" },
-                    { start: createDateTime(today, 21, 30), end: createDateTime(today, 21, 40), description: "первого перерыва", type: "break" },
-                    { start: createDateTime(today, 21, 40), end: createDateTime(tomorrow, 0, 0), description: "работы до обеда", type: "work" },
-                    { start: createDateTime(tomorrow, 0, 0), end: createDateTime(tomorrow, 0, 30), description: "обеда", type: "meal" },
-                    { start: createDateTime(tomorrow, 0, 30), end: createDateTime(tomorrow, 2, 20), description: "работы до перерыва", type: "work" },
-                    { start: createDateTime(tomorrow, 2, 20), end: createDateTime(tomorrow, 2, 30), description: "второго перерыва", type: "break" },
-                    { start: createDateTime(tomorrow, 2, 30), end: createDateTime(tomorrow, 5, 0), description: "работы до третьего перерыва", type: "work" },
-                    { start: createDateTime(tomorrow, 5, 0), end: createDateTime(tomorrow, 5, 10), description: "третьего перерыва", type: "break" },
-                    { start: createDateTime(tomorrow, 5, 10), end: createDateTime(tomorrow, 7, 20), description: "работы до конца смены", type: "work" }
+                return [
+                    { start: createDateTime(t, 19, 20), end: createDateTime(t, 21, 30), description: "работы до первого перерыва", type: "work" },
+                    { start: createDateTime(t, 21, 30), end: createDateTime(t, 21, 40), description: "первого перерыва", type: "break" },
+                    { start: createDateTime(t, 21, 40), end: createDateTime(tm, 0, 0), description: "работы до обеда", type: "work" },
+                    { start: createDateTime(tm, 0, 0), end: createDateTime(tm, 0, 30), description: "обеда", type: "meal" },
+                    { start: createDateTime(tm, 0, 30), end: createDateTime(tm, 2, 20), description: "работы до перерыва", type: "work" },
+                    { start: createDateTime(tm, 2, 20), end: createDateTime(tm, 2, 30), description: "второго перерыва", type: "break" },
+                    { start: createDateTime(tm, 2, 30), end: createDateTime(tm, 5, 0), description: "работы до третьего перерыва", type: "work" },
+                    { start: createDateTime(tm, 5, 0), end: createDateTime(tm, 5, 10), description: "третьего перерыва", type: "break" },
+                    { start: createDateTime(tm, 5, 10), end: createDateTime(tm, 7, 20), description: "работы до конца смены", type: "work" }
                 ];
-                return events;
             } else if (totalMinutes >= 0 && totalMinutes < 440) {
-                const events = [
-                    { start: createDateTime(today, 0, 0), end: createDateTime(today, 0, 30), description: "обеда", type: "meal" },
-                    { start: createDateTime(today, 0, 30), end: createDateTime(today, 2, 20), description: "работы до перерыва", type: "work" },
-                    { start: createDateTime(today, 2, 20), end: createDateTime(today, 2, 30), description: "второго перерыва", type: "break" },
-                    { start: createDateTime(today, 2, 30), end: createDateTime(today, 5, 0), description: "работы до третьего перерыва", type: "work" },
-                    { start: createDateTime(today, 5, 0), end: createDateTime(today, 5, 10), description: "третьего перерыва", type: "break" },
-                    { start: createDateTime(today, 5, 10), end: createDateTime(today, 7, 20), description: "работы до конца смены", type: "work" }
+                return [
+                    { start: createDateTime(t, 0, 0), end: createDateTime(t, 0, 30), description: "обеда", type: "meal" },
+                    { start: createDateTime(t, 0, 30), end: createDateTime(t, 2, 20), description: "работы до перерыва", type: "work" },
+                    { start: createDateTime(t, 2, 20), end: createDateTime(t, 2, 30), description: "второго перерыва", type: "break" },
+                    { start: createDateTime(t, 2, 30), end: createDateTime(t, 5, 0), description: "работы до третьего перерыва", type: "work" },
+                    { start: createDateTime(t, 5, 0), end: createDateTime(t, 5, 10), description: "третьего перерыва", type: "break" },
+                    { start: createDateTime(t, 5, 10), end: createDateTime(t, 7, 20), description: "работы до конца смены", type: "work" }
                 ];
-                return events;
             }
             return [];
         }
 
         function getDayShiftEventsGalagutskaya(now) {
-            const today = new Date(now);
-            today.setHours(0, 0, 0, 0);
-            const events = [
-                { start: createDateTime(today, 7, 20), end: createDateTime(today, 9, 40), description: "работы до первого перерыва", type: "work" },
-                { start: createDateTime(today, 9, 40), end: createDateTime(today, 9, 50), description: "первого перерыва", type: "break" },
-                { start: createDateTime(today, 9, 50), end: createDateTime(today, 12, 15), description: "работы до обеда", type: "work" },
-                { start: createDateTime(today, 12, 15), end: createDateTime(today, 12, 45), description: "обеда", type: "meal" },
-                { start: createDateTime(today, 12, 45), end: createDateTime(today, 14, 40), description: "работы до второго перерыва", type: "work" },
-                { start: createDateTime(today, 14, 40), end: createDateTime(today, 14, 50), description: "второго перерыва", type: "break" },
-                { start: createDateTime(today, 14, 50), end: createDateTime(today, 17, 0), description: "работы до третьего перерыва", type: "work" },
-                { start: createDateTime(today, 17, 0), end: createDateTime(today, 17, 10), description: "третьего перерыва", type: "break" },
-                { start: createDateTime(today, 17, 10), end: createDateTime(today, 19, 20), description: "работы до конца смены", type: "work" }
+            const t = new Date(now); t.setHours(0, 0, 0, 0);
+            return [
+                { start: createDateTime(t, 7, 20), end: createDateTime(t, 9, 40), description: "работы до первого перерыва", type: "work" },
+                { start: createDateTime(t, 9, 40), end: createDateTime(t, 9, 50), description: "первого перерыва", type: "break" },
+                { start: createDateTime(t, 9, 50), end: createDateTime(t, 12, 15), description: "работы до обеда", type: "work" },
+                { start: createDateTime(t, 12, 15), end: createDateTime(t, 12, 45), description: "обеда", type: "meal" },
+                { start: createDateTime(t, 12, 45), end: createDateTime(t, 14, 40), description: "работы до второго перерыва", type: "work" },
+                { start: createDateTime(t, 14, 40), end: createDateTime(t, 14, 50), description: "второго перерыва", type: "break" },
+                { start: createDateTime(t, 14, 50), end: createDateTime(t, 17, 0), description: "работы до третьего перерыва", type: "work" },
+                { start: createDateTime(t, 17, 0), end: createDateTime(t, 17, 10), description: "третьего перерыва", type: "break" },
+                { start: createDateTime(t, 17, 10), end: createDateTime(t, 19, 20), description: "работы до конца смены", type: "work" }
             ];
-            return events;
         }
 
         function getNightShiftEventsGalagutskaya(now) {
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const totalMinutes = hours * 60 + minutes;
-            const today = new Date(now);
-            today.setHours(0, 0, 0, 0);
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-
+            const totalMinutes = now.getHours() * 60 + now.getMinutes();
+            const t = new Date(now); t.setHours(0, 0, 0, 0);
+            const tm = new Date(t); tm.setDate(tm.getDate() + 1);
             if (totalMinutes >= 1160) {
-                const events = [
-                    { start: createDateTime(today, 19, 20), end: createDateTime(today, 21, 30), description: "работы до первого перерыва", type: "work" },
-                    { start: createDateTime(today, 21, 30), end: createDateTime(today, 21, 40), description: "первого перерыва", type: "break" },
-                    { start: createDateTime(today, 21, 40), end: createDateTime(tomorrow, 0, 35), description: "работы до обеда", type: "work" },
-                    { start: createDateTime(tomorrow, 0, 35), end: createDateTime(tomorrow, 1, 5), description: "обеда", type: "meal" },
-                    { start: createDateTime(tomorrow, 1, 5), end: createDateTime(tomorrow, 2, 20), description: "работы до перерыва", type: "work" },
-                    { start: createDateTime(tomorrow, 2, 20), end: createDateTime(tomorrow, 2, 30), description: "второго перерыва", type: "break" },
-                    { start: createDateTime(tomorrow, 2, 30), end: createDateTime(tomorrow, 5, 0), description: "работы до третьего перерыва", type: "work" },
-                    { start: createDateTime(tomorrow, 5, 0), end: createDateTime(tomorrow, 5, 10), description: "третьего перерыва", type: "break" },
-                    { start: createDateTime(tomorrow, 5, 10), end: createDateTime(tomorrow, 7, 20), description: "работы до конца смены", type: "work" }
+                return [
+                    { start: createDateTime(t, 19, 20), end: createDateTime(t, 21, 30), description: "работы до первого перерыва", type: "work" },
+                    { start: createDateTime(t, 21, 30), end: createDateTime(t, 21, 40), description: "первого перерыва", type: "break" },
+                    { start: createDateTime(t, 21, 40), end: createDateTime(tm, 0, 35), description: "работы до обеда", type: "work" },
+                    { start: createDateTime(tm, 0, 35), end: createDateTime(tm, 1, 5), description: "обеда", type: "meal" },
+                    { start: createDateTime(tm, 1, 5), end: createDateTime(tm, 2, 20), description: "работы до перерыва", type: "work" },
+                    { start: createDateTime(tm, 2, 20), end: createDateTime(tm, 2, 30), description: "второго перерыва", type: "break" },
+                    { start: createDateTime(tm, 2, 30), end: createDateTime(tm, 5, 0), description: "работы до третьего перерыва", type: "work" },
+                    { start: createDateTime(tm, 5, 0), end: createDateTime(tm, 5, 10), description: "третьего перерыва", type: "break" },
+                    { start: createDateTime(tm, 5, 10), end: createDateTime(tm, 7, 20), description: "работы до конца смены", type: "work" }
                 ];
-                return events;
             } else if (totalMinutes >= 0 && totalMinutes < 440) {
-                const events = [
-                    { start: createDateTime(today, 0, 35), end: createDateTime(today, 1, 5), description: "обеда", type: "meal" },
-                    { start: createDateTime(today, 1, 5), end: createDateTime(today, 2, 20), description: "работы до перерыва", type: "work" },
-                    { start: createDateTime(today, 2, 20), end: createDateTime(today, 2, 30), description: "второго перерыва", type: "break" },
-                    { start: createDateTime(today, 2, 30), end: createDateTime(today, 5, 0), description: "работы до третьего перерыва", type: "work" },
-                    { start: createDateTime(today, 5, 0), end: createDateTime(today, 5, 10), description: "третьего перерыва", type: "break" },
-                    { start: createDateTime(today, 5, 10), end: createDateTime(today, 7, 20), description: "работы до конца смены", type: "work" }
+                return [
+                    { start: createDateTime(t, 0, 35), end: createDateTime(t, 1, 5), description: "обеда", type: "meal" },
+                    { start: createDateTime(t, 1, 5), end: createDateTime(t, 2, 20), description: "работы до перерыва", type: "work" },
+                    { start: createDateTime(t, 2, 20), end: createDateTime(t, 2, 30), description: "второго перерыва", type: "break" },
+                    { start: createDateTime(t, 2, 30), end: createDateTime(t, 5, 0), description: "работы до третьего перерыва", type: "work" },
+                    { start: createDateTime(t, 5, 0), end: createDateTime(t, 5, 10), description: "третьего перерыва", type: "break" },
+                    { start: createDateTime(t, 5, 10), end: createDateTime(t, 7, 20), description: "работы до конца смены", type: "work" }
                 ];
-                return events;
             }
             return [];
         }
@@ -1691,9 +1808,7 @@
             return [];
         }
 
-        function updateLastSignatureDate() {
-            localStorage.setItem('lastSignatureDate', new Date().toDateString());
-        }
+        function updateLastSignatureDate() { localStorage.setItem('lastSignatureDate', new Date().toDateString()); }
 
         function initInternetIndicator() {
             const indicator = document.getElementById('internetIndicator');
@@ -1708,8 +1823,7 @@
         function toggleIndicatorExpanded() {
             const indicator = document.getElementById('internetIndicator');
             if (!indicator) return;
-            const isExpanded = indicator.classList.contains('expanded');
-            if (isExpanded) {
+            if (indicator.classList.contains('expanded')) {
                 indicator.classList.remove('expanded');
                 localStorage.setItem('internetIndicatorExpanded', 'false');
             } else {
@@ -1722,37 +1836,32 @@
         function restoreIndicatorState() {
             const indicator = document.getElementById('internetIndicator');
             if (!indicator) return;
-            const isExpanded = localStorage.getItem('internetIndicatorExpanded') === 'true';
-            if (isExpanded) { indicator.classList.add('expanded'); updateInternetIndicatorContent(); }
-            else { indicator.classList.remove('expanded'); }
+            if (localStorage.getItem('internetIndicatorExpanded') === 'true') {
+                indicator.classList.add('expanded');
+                updateInternetIndicatorContent();
+            } else {
+                indicator.classList.remove('expanded');
+            }
         }
 
         function updateInternetIndicatorContent() {
             const indicator = document.getElementById('internetIndicator');
             if (!indicator || !indicator.classList.contains('expanded')) return;
             if (!navigator.onLine) {
-                const icon = indicator.querySelector('.internet-icon');
-                const text = indicator.querySelector('.internet-text');
-                if (icon) icon.textContent = '🚫';
-                if (text) text.textContent = 'Оффлайн';
+                indicator.querySelector('.internet-icon').textContent = '🚫';
+                indicator.querySelector('.internet-text').textContent = 'Оффлайн';
                 return;
             }
             if (navigator.connection) {
-                const connection = navigator.connection;
-                const connectionType = connection.type || connection.effectiveType || 'unknown';
-                let connectionIcon = '🌐';
-                let connectionTypeText = 'Интернет';
-                if (connectionType === 'wifi' || connectionType === 'ethernet') { connectionTypeText = 'Wi-Fi'; connectionIcon = '📶'; }
-                else if (connectionType === 'cellular' || connectionType === '4g' || connectionType === '3g' || connectionType === '2g') { connectionTypeText = 'Мобильный'; connectionIcon = '📱'; }
-                const icon = indicator.querySelector('.internet-icon');
-                const text = indicator.querySelector('.internet-text');
-                if (icon) icon.textContent = connectionIcon;
-                if (text) text.textContent = connectionTypeText;
+                const ct = navigator.connection.type || navigator.connection.effectiveType || 'unknown';
+                let icon = '🌐', text = 'Интернет';
+                if (ct === 'wifi' || ct === 'ethernet') { text = 'Wi-Fi'; icon = '📶'; }
+                else if (ct === 'cellular' || ct === '4g' || ct === '3g' || ct === '2g') { text = 'Мобильный'; icon = '📱'; }
+                indicator.querySelector('.internet-icon').textContent = icon;
+                indicator.querySelector('.internet-text').textContent = text;
             } else {
-                const icon = indicator.querySelector('.internet-icon');
-                const text = indicator.querySelector('.internet-text');
-                if (navigator.onLine) { if (icon) icon.textContent = '🌐'; if (text) text.textContent = 'Online'; }
-                else { if (icon) icon.textContent = '🚫'; if (text) text.textContent = 'Оффлайн'; }
+                indicator.querySelector('.internet-icon').textContent = navigator.onLine ? '🌐' : '🚫';
+                indicator.querySelector('.internet-text').textContent = navigator.onLine ? 'Online' : 'Оффлайн';
             }
         }
 
@@ -1765,16 +1874,15 @@
                 return;
             }
             if (navigator.connection) {
-                const connection = navigator.connection;
-                const connectionType = connection.type || connection.effectiveType || 'unknown';
-                let indicatorClass = 'internet-indicator wifi';
-                if (connectionType === 'wifi' || connectionType === 'ethernet') indicatorClass = 'internet-indicator wifi';
-                else if (connectionType === 'cellular' || connectionType === '4g' || connectionType === '3g' || connectionType === '2g') indicatorClass = 'internet-indicator mobile';
-                indicator.className = indicatorClass;
+                const ct = navigator.connection.type || navigator.connection.effectiveType || 'unknown';
+                let cls = 'internet-indicator wifi';
+                if (ct === 'wifi' || ct === 'ethernet') cls = 'internet-indicator wifi';
+                else if (ct === 'cellular' || ct === '4g' || ct === '3g' || ct === '2g') cls = 'internet-indicator mobile';
+                indicator.className = cls;
                 if (indicator.classList.contains('expanded')) updateInternetIndicatorContent();
             } else {
-                const userAgent = navigator.userAgent.toLowerCase();
-                if (userAgent.includes('mobile') || userAgent.includes('android') || userAgent.includes('iphone')) indicator.className = 'internet-indicator mobile';
+                const ua = navigator.userAgent.toLowerCase();
+                if (ua.includes('mobile') || ua.includes('android') || ua.includes('iphone')) indicator.className = 'internet-indicator mobile';
                 else indicator.className = 'internet-indicator wifi';
                 if (indicator.classList.contains('expanded')) updateInternetIndicatorContent();
             }
@@ -1787,17 +1895,12 @@
             const shiftInfo = getCurrentShiftInfo(now);
             const body = document.body;
             body.classList.remove('day-shift', 'night-shift');
-            if (shiftInfo.shift === 'day') {
-                body.classList.add('day-shift');
-            } else if (shiftInfo.shift === 'night') {
-                body.classList.add('night-shift');
-            } else {
-                const hours = now.getHours();
-                if (hours >= 7 && hours < 20) {
-                    body.classList.add('day-shift');
-                } else {
-                    body.classList.add('night-shift');
-                }
+            if (shiftInfo.shift === 'day') body.classList.add('day-shift');
+            else if (shiftInfo.shift === 'night') body.classList.add('night-shift');
+            else {
+                const h = now.getHours();
+                if (h >= 7 && h < 20) body.classList.add('day-shift');
+                else body.classList.add('night-shift');
             }
         }
 
@@ -1808,45 +1911,22 @@
             if (!elTime || !elElapsed || !timerBlock) return;
 
             function getShiftColor(progress) {
-                let r, g, b;
-                if (progress <= 0.5) {
-                    const t = progress / 0.5;
-                    r = 255; g = Math.round(255 * t); b = 0;
-                } else {
-                    const t = (progress - 0.5) / 0.5;
-                    r = Math.round(255 * (1 - t)); g = 255; b = 0;
-                }
-                return `rgb(${r}, ${g}, ${b})`;
+                if (progress <= 0.5) { const t = progress / 0.5; return `rgb(255, ${Math.round(255 * t)}, 0)`; }
+                else { const t = (progress - 0.5) / 0.5; return `rgb(${Math.round(255 * (1 - t))}, 255, 0)`; }
             }
-
             function formatDuration(ms) {
                 if (ms < 0) ms = 0;
                 const totalSec = Math.floor(ms / 1000);
-                const hours = Math.floor(totalSec / 3600);
-                const minutes = Math.floor((totalSec % 3600) / 60);
-                const seconds = totalSec % 60;
-                return `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+                return `${formatTime(Math.floor(totalSec / 3600))}:${formatTime(Math.floor((totalSec % 3600) / 60))}:${formatTime(totalSec % 60)}`;
             }
 
             if (!shiftStart || !shiftEnd || !shiftInfo.isActive) {
-                const hours = now.getHours();
-                const minutes = now.getMinutes();
-                const totalMinutes = hours * 60 + minutes;
-                const today = new Date(now);
-                today.setHours(0,0,0,0);
-                let nextStart, nextName;
-                if (totalMinutes < 440) {
-                    nextStart = createDateTime(today, 7, 20);
-                    nextName = 'Дневная';
-                } else if (totalMinutes >= 440 && totalMinutes < 1160) {
-                    nextStart = createDateTime(today, 19, 20);
-                    nextName = 'Ночная';
-                } else {
-                    const tomorrow = new Date(today);
-                    tomorrow.setDate(tomorrow.getDate() + 1);
-                    nextStart = createDateTime(tomorrow, 7, 20);
-                    nextName = 'Дневная';
-                }
+                const totalMinutes = now.getHours() * 60 + now.getMinutes();
+                const today = new Date(now); today.setHours(0,0,0,0);
+                let nextStart;
+                if (totalMinutes < 440) nextStart = createDateTime(today, 7, 20);
+                else if (totalMinutes < 1160) nextStart = createDateTime(today, 19, 20);
+                else { const tm = new Date(today); tm.setDate(tm.getDate()+1); nextStart = createDateTime(tm, 7, 20); }
                 elTime.textContent = calculateTimeRemaining(now, nextStart);
                 elElapsed.textContent = '00:00:00';
                 timerBlock.style.background = 'rgba(128,128,128,0.15)';
@@ -1859,63 +1939,48 @@
             const totalDuration = shiftEnd - shiftStart;
             const elapsed = Math.max(0, now - shiftStart);
             const progress = Math.min(1, Math.max(0, elapsed / totalDuration));
-
             elTime.textContent = calculateTimeRemaining(now, shiftEnd);
             elElapsed.textContent = formatDuration(elapsed);
-
             const color = getShiftColor(progress);
             elTime.style.color = color;
             elElapsed.style.color = color;
             timerBlock.style.background = 'rgba(0,0,0,0.03)';
             timerBlock.style.borderColor = color;
-
             updateMoneyCounter(now);
         }
 
         function updateTimer() {
             const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
             const currentTimeEl = document.getElementById('sticky-current-time');
-            if (currentTimeEl) currentTimeEl.textContent = `Текущее время: ${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
-
-            const currentShiftInfo = getCurrentShiftInfo(now);
-            const shiftStart = currentShiftInfo.start;
-            const shiftEnd = currentShiftInfo.end;
+            if (currentTimeEl) currentTimeEl.textContent = `Текущее время: ${formatTime(now.getHours())}:${formatTime(now.getMinutes())}:${formatTime(now.getSeconds())}`;
+            const shiftInfo = getCurrentShiftInfo(now);
+            const shiftStart = shiftInfo.start;
+            const shiftEnd = shiftInfo.end;
             const shiftInfoEl = document.getElementById('shiftInfo');
-            if (shiftInfoEl) shiftInfoEl.textContent = currentShiftInfo.shiftText;
-
+            if (shiftInfoEl) shiftInfoEl.textContent = shiftInfo.shiftText;
             updateShiftTheme();
-            updateShiftTotalTimer(now, shiftStart, shiftEnd, currentShiftInfo);
-            updateProgressBar(now, shiftStart, shiftEnd, currentShiftInfo);
-
-            if (!currentShiftInfo.isActive || !shiftStart || !shiftEnd) {
+            updateShiftTotalTimer(now, shiftStart, shiftEnd, shiftInfo);
+            updateProgressBar(now, shiftStart, shiftEnd, shiftInfo);
+            if (!shiftInfo.isActive || !shiftStart || !shiftEnd) {
                 showTimeToNextShift(now);
                 updateEventProgress(null, now);
                 return;
             }
-
-            const events = getShiftEvents(now, currentShiftInfo.shift);
-            let currentActiveEvent = null;
-            let nextEvent = null;
+            const events = getShiftEvents(now, shiftInfo.shift);
+            let currentActiveEvent = null, nextEvent = null;
             for (let i = 0; i < events.length; i++) {
-                const event = events[i];
-                if (now >= event.start && now < event.end) {
-                    currentActiveEvent = event;
+                if (now >= events[i].start && now < events[i].end) {
+                    currentActiveEvent = events[i];
                     if (i < events.length - 1) nextEvent = events[i + 1];
                     break;
                 }
-                if (event.start > now) { nextEvent = event; break; }
+                if (events[i].start > now) { nextEvent = events[i]; break; }
             }
-
             const mainTimer = document.getElementById('mainTimer');
             const timerEvent = document.getElementById('timerEvent');
             const timerDisplay = document.getElementById('timerDisplay');
-
             if (currentActiveEvent) {
-                const timeRemaining = calculateTimeRemaining(now, currentActiveEvent.end);
-                if (mainTimer) mainTimer.textContent = timeRemaining;
+                if (mainTimer) mainTimer.textContent = calculateTimeRemaining(now, currentActiveEvent.end);
                 if (timerEvent) timerEvent.textContent = currentActiveEvent.description;
                 if (timerDisplay) {
                     timerDisplay.className = "timer-display";
@@ -1925,8 +1990,7 @@
                 }
                 updateEventProgress(currentActiveEvent, now);
             } else if (nextEvent) {
-                const timeRemaining = calculateTimeRemaining(now, nextEvent.start);
-                if (mainTimer) mainTimer.textContent = timeRemaining;
+                if (mainTimer) mainTimer.textContent = calculateTimeRemaining(now, nextEvent.start);
                 if (timerEvent) timerEvent.textContent = `До ${nextEvent.description}`;
                 if (timerDisplay) timerDisplay.className = "timer-display next-shift-time";
                 updateEventProgress(null, now);
@@ -1943,43 +2007,25 @@
             const labelStart = document.getElementById('eventLabelStart');
             const labelCurrent = document.getElementById('eventLabelCurrent');
             const labelEnd = document.getElementById('eventLabelEnd');
-
             if (!container || !bar || !labelsContainer) return;
-
             if (!event || now < event.start || now >= event.end) {
                 container.classList.remove('visible');
                 labelsContainer.classList.remove('visible');
                 return;
             }
-
             container.classList.add('visible');
             labelsContainer.classList.add('visible');
-
             const total = event.end - event.start;
-            const elapsed = now - event.start;
-            let percentage = Math.min(100, (elapsed / total) * 100);
-
+            const percentage = Math.min(100, ((now - event.start) / total) * 100);
             bar.style.width = percentage + '%';
             bar.className = 'event-progress-bar ' + event.type;
-
-            const startStr = formatTime(event.start.getHours()) + ':' + formatTime(event.start.getMinutes());
-            const endStr = formatTime(event.end.getHours()) + ':' + formatTime(event.end.getMinutes());
-            labelStart.textContent = '🟢 ' + startStr;
-            labelEnd.textContent = '🔴 ' + endStr;
-
-            let eventEmoji = '';
-            if (event.type === 'work') eventEmoji = '💼';
-            else if (event.type === 'break') eventEmoji = '☕';
-            else if (event.type === 'meal') eventEmoji = '🍽️';
-
-            const timeRemaining = calculateTimeRemaining(now, event.end);
-            const parts = timeRemaining.split(':');
-            let timeLeftText = '';
-            if (parts[0] !== '00') timeLeftText = `${parseInt(parts[0])}ч ${parseInt(parts[1])}м`;
-            else if (parts[1] !== '00') timeLeftText = `${parseInt(parts[1])}м ${parseInt(parts[2])}с`;
-            else timeLeftText = `${parseInt(parts[2])}с`;
-
-            labelCurrent.textContent = `${eventEmoji} ${Math.round(percentage)}% (осталось ${timeLeftText})`;
+            labelStart.textContent = '🟢 ' + formatTime(event.start.getHours()) + ':' + formatTime(event.start.getMinutes());
+            labelEnd.textContent = '🔴 ' + formatTime(event.end.getHours()) + ':' + formatTime(event.end.getMinutes());
+            let emoji = event.type === 'work' ? '💼' : event.type === 'break' ? '☕' : '🍽️';
+            const rem = calculateTimeRemaining(now, event.end);
+            const parts = rem.split(':');
+            let leftText = parts[0] !== '00' ? `${parseInt(parts[0])}ч ${parseInt(parts[1])}м` : parts[1] !== '00' ? `${parseInt(parts[1])}м ${parseInt(parts[2])}с` : `${parseInt(parts[2])}с`;
+            labelCurrent.textContent = `${emoji} ${Math.round(percentage)}% (осталось ${leftText})`;
         }
 
         function updateProgressBar(now, shiftStart, shiftEnd, shiftInfo) {
@@ -2000,38 +2046,23 @@
                 if (milestone3) milestone3.classList.remove('milestone-reached');
                 return;
             }
-
             const isDayShift = shiftInfo && shiftInfo.shift === 'day';
-            if (isDayShift) {
-                if (milestoneLabel1) milestoneLabel1.textContent = '10:20';
-                if (milestoneLabel3) milestoneLabel3.textContent = '16:20';
-                if (milestone1) milestone1.title = '10:20';
-                if (milestone3) milestone3.title = '16:20';
-            } else {
-                if (milestoneLabel1) milestoneLabel1.textContent = '22:20';
-                if (milestoneLabel3) milestoneLabel3.textContent = '04:20';
-                if (milestone1) milestone1.title = '22:20';
-                if (milestone3) milestone3.title = '04:20';
-            }
-
+            if (milestoneLabel1) milestoneLabel1.textContent = isDayShift ? '10:20' : '22:20';
+            if (milestoneLabel3) milestoneLabel3.textContent = isDayShift ? '16:20' : '04:20';
+            if (milestone1) milestone1.title = isDayShift ? '10:20' : '22:20';
+            if (milestone3) milestone3.title = isDayShift ? '16:20' : '04:20';
             const totalShiftDuration = shiftEnd - shiftStart;
-            const elapsedTime = now - shiftStart;
-            let percentage = (elapsedTime / totalShiftDuration) * 100;
-            percentage = Math.max(0, Math.min(100, percentage));
+            const percentage = Math.max(0, Math.min(100, ((now - shiftStart) / totalShiftDuration) * 100));
             progressBar.style.width = percentage + '%';
             if (milestone1) milestone1.classList.toggle('milestone-reached', percentage >= 25);
             if (milestone2) milestone2.classList.toggle('milestone-reached', percentage >= 50);
             if (milestone3) milestone3.classList.toggle('milestone-reached', percentage >= 75);
             const halfTime = new Date(shiftStart.getTime() + totalShiftDuration / 2);
             const halfTimeString = halfTime.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-            if (halfShiftLabel) {
-                halfShiftLabel.textContent = halfTimeString;
-            }
-            if (percentage < 50) {
-                progressPercentage.textContent = `${percentage.toFixed(1)}% выполнено · Середина в ${halfTimeString}`;
-            } else {
-                progressPercentage.textContent = `${percentage.toFixed(1)}% выполнено · Можно меняться (${halfTimeString})`;
-            }
+            if (halfShiftLabel) halfShiftLabel.textContent = halfTimeString;
+            progressPercentage.textContent = percentage < 50
+                ? `${percentage.toFixed(1)}% выполнено · Середина в ${halfTimeString}`
+                : `${percentage.toFixed(1)}% выполнено · Можно меняться (${halfTimeString})`;
         }
 
         function showTimeToNextShift(now) {
@@ -2040,27 +2071,21 @@
             const shiftInfoElement = document.getElementById('shiftInfo');
             const timerDisplay = document.getElementById('timerDisplay');
             const progressPercentage = document.getElementById('progressPercentage');
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const totalMinutes = hours * 60 + minutes;
-            const today = new Date(now);
-            today.setHours(0, 0, 0, 0);
+            const totalMinutes = now.getHours() * 60 + now.getMinutes();
+            const today = new Date(now); today.setHours(0, 0, 0, 0);
             let nextShiftStart;
-
             if (totalMinutes < 440) {
                 nextShiftStart = createDateTime(today, 7, 20);
                 if (shiftInfoElement) shiftInfoElement.textContent = "Следующая: Дневная смена (07:20 - 19:20)";
-            } else if (totalMinutes >= 440 && totalMinutes < 1160) {
+            } else if (totalMinutes < 1160) {
                 nextShiftStart = createDateTime(today, 19, 20);
                 if (shiftInfoElement) shiftInfoElement.textContent = "Следующая: Ночная смена (19:20 - 07:20)";
             } else {
-                const tomorrow = new Date(today);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                nextShiftStart = createDateTime(tomorrow, 7, 20);
+                const tm = new Date(today); tm.setDate(tm.getDate() + 1);
+                nextShiftStart = createDateTime(tm, 7, 20);
                 if (shiftInfoElement) shiftInfoElement.textContent = "Следующая: Дневная смена (07:20 - 19:20)";
             }
-            const timeRemaining = calculateTimeRemaining(now, nextShiftStart);
-            if (mainTimer) mainTimer.textContent = timeRemaining;
+            if (mainTimer) mainTimer.textContent = calculateTimeRemaining(now, nextShiftStart);
             if (timerEvent) timerEvent.textContent = "До начала следующей смены";
             if (timerDisplay) timerDisplay.className = "timer-display next-shift-time";
             if (progressPercentage) progressPercentage.textContent = "0% выполнено (Между сменами)";
@@ -2074,32 +2099,28 @@
 
         function updateSchedule() {
             const now = new Date();
-            const currentShiftInfo = getCurrentShiftInfo(now);
-            document.getElementById('scheduleShiftInfo').textContent = currentShiftInfo.shiftText;
-            const events = getShiftEvents(now, currentShiftInfo.shift);
+            const shiftInfo = getCurrentShiftInfo(now);
+            document.getElementById('scheduleShiftInfo').textContent = shiftInfo.shiftText;
+            const events = getShiftEvents(now, shiftInfo.shift);
             const scheduleList = document.getElementById('scheduleList');
             scheduleList.innerHTML = '';
-            events.forEach((event, index) => {
+            events.forEach(event => {
                 const li = document.createElement('li');
                 li.className = `schedule-item ${event.type}`;
-                if (currentShiftInfo.shift === "night") li.classList.add('night');
+                if (shiftInfo.shift === "night") li.classList.add('night');
                 if (now >= event.start && now < event.end) li.classList.add('active');
                 else if (now >= event.end) li.classList.add('completed');
-                const startTime = formatTime(event.start.getHours()) + ':' + formatTime(event.start.getMinutes());
-                const endTime = formatTime(event.end.getHours()) + ':' + formatTime(event.end.getMinutes());
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'schedule-item-content';
                 const iconSpan = document.createElement('div');
                 iconSpan.className = 'schedule-icon';
-                if (event.type === 'work') iconSpan.textContent = '💼';
-                else if (event.type === 'break') iconSpan.textContent = '☕';
-                else if (event.type === 'meal') iconSpan.textContent = '🍽️';
+                iconSpan.textContent = event.type === 'work' ? '💼' : event.type === 'break' ? '☕' : '🍽️';
                 const descSpan = document.createElement('div');
                 descSpan.className = 'schedule-desc';
                 descSpan.textContent = event.description;
                 const timeSpan = document.createElement('div');
                 timeSpan.className = 'schedule-time';
-                timeSpan.textContent = `${startTime} - ${endTime}`;
+                timeSpan.textContent = `${formatTime(event.start.getHours())}:${formatTime(event.start.getMinutes())} - ${formatTime(event.end.getHours())}:${formatTime(event.end.getMinutes())}`;
                 contentDiv.appendChild(iconSpan);
                 contentDiv.appendChild(descSpan);
                 contentDiv.appendChild(timeSpan);
@@ -2111,16 +2132,11 @@
                     progressBar.className = 'item-progress-bar';
                     const progressText = document.createElement('div');
                     progressText.className = 'item-progress-text';
-                    const totalDuration = event.end - event.start;
-                    const elapsed = now - event.start;
-                    const progressPercentage = Math.min(100, (elapsed / totalDuration) * 100);
+                    const progressPercentage = Math.min(100, ((now - event.start) / (event.end - event.start)) * 100);
                     progressBar.style.width = `${progressPercentage}%`;
-                    const timeRemaining = calculateTimeRemaining(now, event.end);
-                    const timeRemainingParts = timeRemaining.split(':');
-                    let timeText = '';
-                    if (timeRemainingParts[0] !== '00') timeText = `${parseInt(timeRemainingParts[0])}ч ${parseInt(timeRemainingParts[1])}м осталось`;
-                    else if (timeRemainingParts[1] !== '00') timeText = `${parseInt(timeRemainingParts[1])}м ${parseInt(timeRemainingParts[2])}с осталось`;
-                    else timeText = `${parseInt(timeRemainingParts[2])}с осталось`;
+                    const rem = calculateTimeRemaining(now, event.end);
+                    const p = rem.split(':');
+                    let timeText = p[0] !== '00' ? `${parseInt(p[0])}ч ${parseInt(p[1])}м осталось` : p[1] !== '00' ? `${parseInt(p[1])}м ${parseInt(p[2])}с осталось` : `${parseInt(p[2])}с осталось`;
                     progressText.textContent = `${Math.round(progressPercentage)}% (${timeText})`;
                     progressContainer.appendChild(progressBar);
                     li.appendChild(progressContainer);
@@ -2136,8 +2152,7 @@
             const day = today.getDate();
             const todayStr = `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
             const year = today.getFullYear();
-            const currentBirthdays = getCurrentBirthdays();
-            const birthday = currentBirthdays.find(b => b.date === todayStr);
+            const birthday = getCurrentBirthdays().find(b => b.date === todayStr);
             if (birthday) {
                 const age = year - birthday.year;
                 const holiday = { date: todayStr, name: `${birthday.icon} День рождения ${birthday.name}! ${age} лет`, icon: birthday.icon, className: 'holiday-birthday' };
@@ -2145,15 +2160,14 @@
                 applyHolidayTheme(holiday);
                 return;
             }
-            let holiday = HOLIDAYS.find(h => h.date === todayStr);
+            const holiday = HOLIDAYS.find(h => h.date === todayStr);
             if (holiday) { currentHoliday = holiday; applyHolidayTheme(holiday); }
         }
 
         function getCurrentBirthdays() { return currentSignatureType === 1 ? BIRTHDAYS_GALAGUTSKY : BIRTHDAYS_GALAGUTSKAYA; }
 
         function applyHolidayTheme(holiday) {
-            const holidayClasses = ['holiday', 'holiday-new-year', 'holiday-christmas', 'holiday-valentine', 'holiday-march8', 'holiday-may9', 'holiday-birthday', 'holiday-family'];
-            holidayClasses.forEach(cls => document.body.classList.remove(cls));
+            ['holiday', 'holiday-new-year', 'holiday-christmas', 'holiday-valentine', 'holiday-march8', 'holiday-may9', 'holiday-birthday', 'holiday-family'].forEach(cls => document.body.classList.remove(cls));
             document.body.classList.add('holiday', holiday.className);
             const banner = document.getElementById('holidayBanner');
             const holidayIcon = document.getElementById('holidayIcon');
@@ -2169,8 +2183,7 @@
         }
 
         function checkAndStartSeasonEffect() {
-            const now = new Date();
-            const month = now.getMonth() + 1;
+            const month = new Date().getMonth() + 1;
             let season;
             if (month >= 3 && month <= 5) season = 'spring';
             else if (month >= 6 && month <= 8) season = 'summer';
@@ -2192,123 +2205,111 @@
         }
 
         function startWinterEffect() {
-            const seasonContainer = document.getElementById('season-container');
-            if (!seasonContainer) return;
+            const c = document.getElementById('season-container');
+            if (!c) return;
             for (let i = 0; i < 12; i++) setTimeout(() => createSnowflake(), Math.random() * 1000);
             seasonInterval = setInterval(() => { if (Math.random() > 0.3) createSnowflake(); }, 300);
             function createSnowflake() {
-                const snowflake = document.createElement('div');
-                snowflake.classList.add('snowflake');
+                const s = document.createElement('div');
+                s.classList.add('snowflake');
                 const size = Math.random() * 7 + 3;
-                snowflake.style.width = `${size}px`;
-                snowflake.style.height = `${size}px`;
-                snowflake.style.left = `${Math.random() * 100}vw`;
+                s.style.width = `${size}px`; s.style.height = `${size}px`;
+                s.style.left = `${Math.random() * 100}vw`;
                 const duration = Math.random() * 5 + 5;
-                snowflake.style.animationDuration = `${duration}s`;
-                snowflake.style.animationDelay = `${Math.random() * 5}s`;
-                snowflake.style.background = `rgba(240, 248, 255, ${Math.random() * 0.7 + 0.3})`;
-                seasonContainer.appendChild(snowflake);
-                setTimeout(() => { if (snowflake.parentNode === seasonContainer) seasonContainer.removeChild(snowflake); }, (duration + 5) * 1000);
+                s.style.animationDuration = `${duration}s`;
+                s.style.animationDelay = `${Math.random() * 5}s`;
+                s.style.background = `rgba(240, 248, 255, ${Math.random() * 0.7 + 0.3})`;
+                c.appendChild(s);
+                setTimeout(() => { if (s.parentNode === c) c.removeChild(s); }, (duration + 5) * 1000);
             }
         }
 
         function startSpringEffect() {
-            const seasonContainer = document.getElementById('season-container');
-            if (!seasonContainer) return;
-            const tulipEmojis = ['🌷', '🌸', '💮', '🏵️'];
+            const c = document.getElementById('season-container');
+            if (!c) return;
+            const emojis = ['🌷', '🌸', '💮', '🏵️'];
             for (let i = 0; i < 10; i++) setTimeout(() => createTulip(), Math.random() * 2000);
             seasonInterval = setInterval(() => { if (Math.random() > 0.7) createTulip(); }, 2000);
             function createTulip() {
-                const tulip = document.createElement('div');
-                tulip.classList.add('tulip');
-                tulip.textContent = tulipEmojis[Math.floor(Math.random() * tulipEmojis.length)];
-                tulip.style.left = `${Math.random() * 100}vw`;
-                tulip.style.fontSize = `${Math.random() * 20 + 30}px`;
-                tulip.style.color = ['#ff6b6b', '#ff8e8e', '#ff5252', '#ff4081', '#f48fb1'][Math.floor(Math.random() * 5)];
-                seasonContainer.appendChild(tulip);
-                setTimeout(() => { if (tulip.parentNode === seasonContainer) seasonContainer.removeChild(tulip); }, 10000 + Math.random() * 5000);
+                const t = document.createElement('div');
+                t.classList.add('tulip');
+                t.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                t.style.left = `${Math.random() * 100}vw`;
+                t.style.fontSize = `${Math.random() * 20 + 30}px`;
+                t.style.color = ['#ff6b6b', '#ff8e8e', '#ff5252', '#ff4081', '#f48fb1'][Math.floor(Math.random() * 5)];
+                c.appendChild(t);
+                setTimeout(() => { if (t.parentNode === c) c.removeChild(t); }, 10000 + Math.random() * 5000);
             }
         }
 
         function startSummerEffect() {
-            const seasonContainer = document.getElementById('season-container');
-            if (!seasonContainer) return;
+            const c = document.getElementById('season-container');
+            if (!c) return;
             for (let i = 0; i < 45; i++) setTimeout(() => createGrassBlade(), Math.random() * 1500);
             seasonInterval = setInterval(() => { if (Math.random() > 0.8) createGrassBlade(); }, 1500);
             function createGrassBlade() {
-                const grass = document.createElement('div');
-                grass.classList.add('grass-blade');
-                grass.style.left = `${Math.random() * 100}vw`;
-                const height = Math.random() * 50 + 30;
-                grass.style.setProperty('--grass-height', `${height}px`);
-                grass.style.width = `${Math.random() * 3 + 1}px`;
-                grass.style.transform = `skewX(${Math.random() * 40 - 20}deg)`;
-                seasonContainer.appendChild(grass);
-                setTimeout(() => { if (grass.parentNode === seasonContainer) seasonContainer.removeChild(grass); }, 12000 + Math.random() * 6000);
+                const g = document.createElement('div');
+                g.classList.add('grass-blade');
+                g.style.left = `${Math.random() * 100}vw`;
+                g.style.setProperty('--grass-height', `${Math.random() * 50 + 30}px`);
+                g.style.width = `${Math.random() * 3 + 1}px`;
+                g.style.transform = `skewX(${Math.random() * 40 - 20}deg)`;
+                c.appendChild(g);
+                setTimeout(() => { if (g.parentNode === c) c.removeChild(g); }, 12000 + Math.random() * 6000);
             }
         }
 
         function startAutumnEffect() {
-            const seasonContainer = document.getElementById('season-container');
-            if (!seasonContainer) return;
-            const leafEmojis = ['🍁', '🍂', '🥮', '🌰'];
+            const c = document.getElementById('season-container');
+            if (!c) return;
+            const emojis = ['🍁', '🍂', '🥮', '🌰'];
             for (let i = 0; i < 6; i++) setTimeout(() => createLeaf(), Math.random() * 1500);
             seasonInterval = setInterval(() => createLeaf(), 1000 + Math.random() * 2000);
             function createLeaf() {
-                const leaf = document.createElement('div');
-                leaf.classList.add('leaf');
-                leaf.textContent = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
-                leaf.style.left = `${Math.random() * 100}vw`;
-                leaf.style.fontSize = `${Math.random() * 20 + 20}px`;
-                leaf.style.animation = `leaf-fall ${Math.random() * 4 + 6}s linear forwards`;
-                leaf.style.animationDelay = `${Math.random() * 2}s`;
-                leaf.style.color = ['#ff9800', '#ff5722', '#795548', '#8d6e63', '#d84315'][Math.floor(Math.random() * 5)];
-                seasonContainer.appendChild(leaf);
-                setTimeout(() => { if (leaf.parentNode === seasonContainer) seasonContainer.removeChild(leaf); }, 8000);
+                const l = document.createElement('div');
+                l.classList.add('leaf');
+                l.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                l.style.left = `${Math.random() * 100}vw`;
+                l.style.fontSize = `${Math.random() * 20 + 20}px`;
+                l.style.animation = `leaf-fall ${Math.random() * 4 + 6}s linear forwards`;
+                l.style.animationDelay = `${Math.random() * 2}s`;
+                l.style.color = ['#ff9800', '#ff5722', '#795548', '#8d6e63', '#d84315'][Math.floor(Math.random() * 5)];
+                c.appendChild(l);
+                setTimeout(() => { if (l.parentNode === c) c.removeChild(l); }, 8000);
             }
         }
 
         function switchSignatureType(type) {
             currentSignatureType = type;
-            const btn1 = document.getElementById('btnSignature1');
-            const btn2 = document.getElementById('btnSignature2');
-            if (btn1 && btn2) {
-                btn1.classList.toggle('active', currentSignatureType === 1);
-                btn2.classList.toggle('active', currentSignatureType === 2);
-            }
-            localStorage.setItem('signatureType', currentSignatureType.toString());
+            document.getElementById('btnSignature1').classList.toggle('active', type === 1);
+            document.getElementById('btnSignature2').classList.toggle('active', type === 2);
+            localStorage.setItem('signatureType', type.toString());
             updateMoneyCounter(new Date());
             checkAndApplyHolidayTheme();
             updateSchedule();
         }
 
         function loadSavedSignatureType() {
-            const savedType = localStorage.getItem('signatureType');
-            if (savedType) {
-                currentSignatureType = parseInt(savedType);
-                const btn1 = document.getElementById('btnSignature1');
-                const btn2 = document.getElementById('btnSignature2');
-                if (btn1 && btn2) {
-                    btn1.classList.toggle('active', currentSignatureType === 1);
-                    btn2.classList.toggle('active', currentSignatureType === 2);
-                }
+            const saved = localStorage.getItem('signatureType');
+            if (saved) {
+                currentSignatureType = parseInt(saved);
+                document.getElementById('btnSignature1').classList.toggle('active', currentSignatureType === 1);
+                document.getElementById('btnSignature2').classList.toggle('active', currentSignatureType === 2);
             }
             updateMoneyCounter(new Date());
         }
 
-        // Сохранение чекбокса "Подработка"
         function restorePartTimeCheckbox() {
             const checkbox = document.getElementById('partTimeCheckbox');
             if (!checkbox) return;
-            const saved = localStorage.getItem('partTime');
-            if (saved === 'true') checkbox.checked = true;
+            if (localStorage.getItem('partTime') === 'true') checkbox.checked = true;
             checkbox.addEventListener('change', function() {
                 localStorage.setItem('partTime', checkbox.checked ? 'true' : 'false');
                 updateMoneyCounter(new Date());
             });
         }
 
-        // ===== ГРАФИК СМЕН (самостоятельный модуль) =====
+        // ===== ГРАФИК СМЕН + ПОДРАБОТКИ + МЕРОПРИЯТИЯ =====
         (function() {
             const MONTHS = {
                 8: {
@@ -2358,8 +2359,13 @@
             };
 
             const MONTH_ORDER = [8, 9, 10, 11];
+            const MONTH_NAMES_SHORT = { 8: 'Сен', 9: 'Окт', 10: 'Ноя', 11: 'Дек' };
             const START_WEEKDAY = { 8: 'ВТ', 9: 'ЧТ', 10: 'ВС', 11: 'ВТ' };
+            const shiftStart = { '1': '07:20', '2': '19:20' };
+            const shiftEnd = { '1': '19:20', '2': '07:20' };
             const dayNames = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
+            const MAX_REST_HOURS = 24;
+            const HOURLY_RATE = 48.49;
             const SHIFT_HOURS = 11;
 
             function getCurrentMonthKey() {
@@ -2371,6 +2377,9 @@
             }
 
             let currentMonthKey = getCurrentMonthKey();
+            let extras = {}, absents = {}, events = {};
+            let selectedDay = null;
+            let saveTimeout = null;
 
             let longPressTimer = null;
             let longPressTriggered = false;
@@ -2385,24 +2394,57 @@
             let zoomCooldownTimer = null;
             const ZOOM_COOLDOWN = 400;
 
-            const gridEl = document.getElementById('shiftCalendarGrid');
-            const timelineOverlay = document.getElementById('shiftTimelineOverlay');
-            const timelineModal = document.getElementById('shiftTimelineModal');
-            const timelineDateText = document.getElementById('shiftTimelineDateText');
-            const timelineContainer = document.getElementById('shiftTimelineContainer');
-            const timelineClose = document.getElementById('shiftTimelineClose');
-            const monthTitleEl = document.getElementById('shiftMonthTitle');
-            const prevMonthBtn = document.getElementById('shiftPrevMonth');
-            const nextMonthBtn = document.getElementById('shiftNextMonth');
-            const shiftsCountEl = document.getElementById('shiftShiftsCount');
-            const hoursCountEl = document.getElementById('shiftHoursCount');
-
-            if (!gridEl) return;
+            const gridEl = document.getElementById('calendarGrid');
+            const extraCountEl = document.getElementById('extraCount');
+            const restBeforeDisplayEl = document.getElementById('restBeforeDisplay');
+            const restAfterDisplayEl = document.getElementById('restAfterDisplay');
+            const nextShiftDisplayEl = document.getElementById('nextShiftDisplay');
+            const saveIndicator = document.getElementById('saveIndicator');
+            const progressBefore = document.getElementById('progressBefore');
+            const progressAfter = document.getElementById('progressAfter');
+            const progressBeforeLabel = document.getElementById('progressBeforeLabel');
+            const progressAfterLabel = document.getElementById('progressAfterLabel');
+            const restBeforeRow = document.getElementById('restBeforeRow');
+            const restAfterRow = document.getElementById('restAfterRow');
+            const nextShiftRow = document.getElementById('nextShiftRow');
+            const bonusDisplayEl = document.getElementById('bonusDisplay');
+            const eventRestBeforeRow = document.getElementById('eventRestBeforeRow');
+            const eventRestAfterRow = document.getElementById('eventRestAfterRow');
+            const eventRestBeforeDisplay = document.getElementById('eventRestBeforeDisplay');
+            const eventRestAfterDisplay = document.getElementById('eventRestAfterDisplay');
+            const progressEventBefore = document.getElementById('progressEventBefore');
+            const progressEventAfter = document.getElementById('progressEventAfter');
+            const progressEventBeforeLabel = document.getElementById('progressEventBeforeLabel');
+            const progressEventAfterLabel = document.getElementById('progressEventAfterLabel');
+            const eventsListRow = document.getElementById('eventsListRow');
+            const eventsListEl = document.getElementById('eventsList');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const editModal = document.getElementById('editModal');
+            const modalDateText = document.getElementById('modalDateText');
+            const modalShift1 = document.getElementById('modalShift1');
+            const modalShift2 = document.getElementById('modalShift2');
+            const modalAbsent = document.getElementById('modalAbsent');
+            const modalEvent = document.getElementById('modalEvent');
+            const modalRemove = document.getElementById('modalRemove');
+            const modalCancel = document.getElementById('modalCancel');
+            const eventFormContainer = document.getElementById('eventFormContainer');
+            const eventTimeInput = document.getElementById('eventTime');
+            const eventDurationInput = document.getElementById('eventDuration');
+            const eventConflictWarning = document.getElementById('eventConflictWarning');
+            const modalEventSave = document.getElementById('modalEventSave');
+            const modalEventCancel = document.getElementById('modalEventCancel');
+            const mainBtnGroup = document.getElementById('mainBtnGroup');
+            const timelineOverlay = document.getElementById('timelineOverlay');
+            const timelineModal = document.getElementById('timelineModal');
+            const timelineDateText = document.getElementById('timelineDateText');
+            const timelineContainer = document.getElementById('timelineContainer');
+            const timelineClose = document.getElementById('timelineClose');
+            const monthTitleEl = document.getElementById('monthTitle');
+            const prevMonthBtn = document.getElementById('prevMonth');
+            const nextMonthBtn = document.getElementById('nextMonth');
 
             function getBrowserScale() {
-                if (window.visualViewport && typeof window.visualViewport.scale === 'number') {
-                    return window.visualViewport.scale || 1;
-                }
+                if (window.visualViewport && typeof window.visualViewport.scale === 'number') return window.visualViewport.scale || 1;
                 return 1;
             }
             function applyModalScale(el) {
@@ -2410,7 +2452,7 @@
                 const s = getBrowserScale();
                 el.style.transform = (s && s > 1.001) ? 'scale(' + (1 / s) + ')' : '';
             }
-            function applyAllModalScales() { applyModalScale(timelineModal); }
+            function applyAllModalScales() { applyModalScale(editModal); applyModalScale(timelineModal); }
             function setupModalScaleListeners() {
                 if (window.visualViewport) {
                     window.visualViewport.addEventListener('resize', applyAllModalScales);
@@ -2448,8 +2490,35 @@
                     window.visualViewport.addEventListener('resize', () => { if (getBrowserScale() !== 1) markZooming(); });
                 }
             }
-            function shouldIgnoreTap() {
-                return multiTouchActive || zoomingRecently;
+            function shouldIgnoreTap() { return multiTouchActive || zoomingRecently; }
+
+            function storageKeyFor(mk) {
+                const m = MONTHS[mk];
+                return 'schedule_v2_' + m.year + '_' + String(mk + 1).padStart(2, '0');
+            }
+            function loadData(mk) {
+                try {
+                    const saved = localStorage.getItem(storageKeyFor(mk));
+                    if (saved) {
+                        const p = JSON.parse(saved);
+                        if (typeof p === 'object' && p !== null) {
+                            extras = p.extras || {};
+                            absents = p.absents || {};
+                            events = p.events || {};
+                            return;
+                        }
+                    }
+                } catch (e) { console.warn('Не удалось загрузить сохранения:', e); }
+                extras = {}; absents = {}; events = {};
+            }
+            function saveData() {
+                try {
+                    localStorage.setItem(storageKeyFor(currentMonthKey), JSON.stringify({ extras, absents, events }));
+                    showSaveIndicator();
+                } catch (e) { console.warn('Не удалось сохранить:', e); }
+            }
+            function showSaveIndicator() {
+                if (saveIndicator) { saveIndicator.classList.add('show'); clearTimeout(saveTimeout); saveTimeout = setTimeout(() => saveIndicator.classList.remove('show'), 1500); }
             }
 
             function currentMonth() { return MONTHS[currentMonthKey]; }
@@ -2459,18 +2528,151 @@
             function currentFirstDayIndex() { return currentMonth().firstDayIndex; }
             function currentBaseSchedule() { return currentMonth().baseSchedule; }
 
-            function getShiftType(day) { return currentBaseSchedule()[day] || null; }
+            function getShiftType(day) {
+                if (absents[day]) return 'absent';
+                if (extras[day]) return extras[day];
+                return currentBaseSchedule()[day] || null;
+            }
             function getShiftLabel(day) {
                 const t = getShiftType(day);
+                if (t === 'absent') return '✕ Отс';
                 if (t === '1') return '1 смена';
                 if (t === '2') return '2 смена';
                 return 'Вых';
             }
+            function isExtra(day) { return !!extras[day]; }
+            function hasEvent(day) { return !!events[day]; }
+            function getExtraClass(day) {
+                if (extras[day] === '1') return 'extra-shift-1';
+                if (extras[day] === '2') return 'extra-shift-2';
+                return '';
+            }
             function getShiftClass(day) {
                 const t = getShiftType(day);
+                if (t === 'absent') return 'absent-cell';
                 if (t === '1') return 'shift-1';
                 if (t === '2') return 'shift-2';
                 return 'weekend-cell';
+            }
+            function formatRestTime(th) {
+                if (th === null || th === undefined || !isFinite(th)) return null;
+                const days = Math.floor(th / 24);
+                const hours = Math.round(th % 24);
+                return days === 0 ? `${hours} ч` : `${days}д ${hours}ч`;
+            }
+            function getRestStatus(h) {
+                if (h === null || h === undefined || !isFinite(h)) return 'unknown';
+                if (h >= 12) return 'good';
+                if (h >= 8) return 'warn';
+                return 'bad';
+            }
+            function getProgressPercent(h) {
+                if (h === null || h === undefined || !isFinite(h)) return 0;
+                return Math.min((h / MAX_REST_HOURS) * 100, 100);
+            }
+            function findPreviousShift(day) {
+                for (let d = day - 1; d >= 1; d--) {
+                    const s = getShiftType(d);
+                    if (s === '1' || s === '2') return { day: d, shift: s };
+                }
+                return null;
+            }
+            function findNextShift(day) {
+                for (let d = day + 1; d <= currentDaysInMonth(); d++) {
+                    const s = getShiftType(d);
+                    if (s === '1' || s === '2') return { day: d, shift: s };
+                }
+                return null;
+            }
+            function calcRestBetween(prevDay, prevShift, nextDay, nextShift) {
+                if (!prevDay || !prevShift || !nextDay || !nextShift) return null;
+                let endDate = new Date(currentYear(), currentMonthIndexJS(), prevDay);
+                const [eh, em] = shiftEnd[prevShift].split(':').map(Number);
+                endDate.setHours(eh, em, 0, 0);
+                if (prevShift === '2') endDate.setDate(endDate.getDate() + 1);
+                let startDate = new Date(currentYear(), currentMonthIndexJS(), nextDay);
+                const [sh, sm] = shiftStart[nextShift].split(':').map(Number);
+                startDate.setHours(sh, sm, 0, 0);
+                let diffMs = startDate - endDate;
+                if (diffMs < 0) diffMs += 24 * 3600 * 1000;
+                return diffMs / (3600 * 1000);
+            }
+            function calcRestBetweenShiftAndEvent(shiftDay, shiftType, eventDay, eventTime, isAfterShift) {
+                const [eh, em] = eventTime.split(':').map(Number);
+                const eventDate = new Date(currentYear(), currentMonthIndexJS(), eventDay);
+                eventDate.setHours(eh, em, 0, 0);
+                if (isAfterShift) {
+                    const sed = new Date(currentYear(), currentMonthIndexJS(), shiftDay);
+                    const [sh, sm] = shiftEnd[shiftType].split(':').map(Number);
+                    sed.setHours(sh, sm, 0, 0);
+                    if (shiftType === '2') sed.setDate(sed.getDate() + 1);
+                    let diffMs = eventDate - sed;
+                    if (diffMs < 0) diffMs += 24 * 3600 * 1000;
+                    return diffMs / (3600 * 1000);
+                } else {
+                    const ssd = new Date(currentYear(), currentMonthIndexJS(), shiftDay);
+                    const [sh, sm] = shiftStart[shiftType].split(':').map(Number);
+                    ssd.setHours(sh, sm, 0, 0);
+                    let diffMs = ssd - eventDate;
+                    if (diffMs < 0) diffMs += 24 * 3600 * 1000;
+                    return diffMs / (3600 * 1000);
+                }
+            }
+            function hasConflict(day) {
+                if (!events[day]) return false;
+                const shift = getShiftType(day);
+                if (shift !== '1' && shift !== '2') return false;
+                const ev = events[day];
+                const [eh, em] = ev.time.split(':').map(Number);
+                const eventStart = new Date(currentYear(), currentMonthIndexJS(), day);
+                eventStart.setHours(eh, em, 0, 0);
+                const eventEnd = new Date(eventStart.getTime() + ev.duration * 3600 * 1000);
+                const shiftStartDate = new Date(currentYear(), currentMonthIndexJS(), day);
+                const [sh, sm] = shiftStart[shift].split(':').map(Number);
+                shiftStartDate.setHours(sh, sm, 0, 0);
+                const shiftEndDate = new Date(shiftStartDate.getTime() + 12 * 3600 * 1000);
+                if (shift === '2') shiftEndDate.setDate(shiftEndDate.getDate() + 1);
+                return eventStart < shiftEndDate && eventEnd > shiftStartDate;
+            }
+            function updateProgressBar(el, hours, labelEl) {
+                if (hours === null || hours === undefined || !isFinite(hours)) {
+                    el.style.width = '0%'; el.className = 'progress-fill';
+                    if (labelEl) labelEl.textContent = '0%';
+                    return;
+                }
+                el.style.width = getProgressPercent(hours) + '%';
+                el.className = 'progress-fill ' + getRestStatus(hours);
+                if (labelEl) labelEl.textContent = Math.round(getProgressPercent(hours)) + '%';
+            }
+            function calcTotalBonus() {
+                let totalShifts = 0, absentCount = 0;
+                for (let d = 1; d <= currentDaysInMonth(); d++) {
+                    const s = getShiftType(d);
+                    if (s === 'absent') absentCount++;
+                    else if (s === '1' || s === '2') totalShifts++;
+                }
+                if (absentCount >= 2) return { totalShifts, totalHours: 0, bonus: 0, absentCount, denied: true };
+                const totalHours = totalShifts * SHIFT_HOURS;
+                return { totalShifts, totalHours, bonus: totalHours * HOURLY_RATE, absentCount, denied: false };
+            }
+            function updateBonusDisplay() {
+                const { totalShifts, totalHours, bonus, denied } = calcTotalBonus();
+                if (denied) {
+                    bonusDisplayEl.textContent = '❌ НЕ ПОЛОЖЕНА (2+ отсутствия)';
+                    bonusDisplayEl.className = 'bonus-denied';
+                    bonusDisplayEl.style.fontWeight = '700';
+                    bonusDisplayEl.style.fontSize = '14px';
+                } else if (totalShifts === 0) {
+                    bonusDisplayEl.textContent = '0 ₽';
+                    bonusDisplayEl.className = '';
+                    bonusDisplayEl.style.fontWeight = '600';
+                    bonusDisplayEl.style.fontSize = '15px';
+                } else {
+                    bonusDisplayEl.textContent = `${bonus.toFixed(2)} ₽ (${totalHours} ч)`;
+                    bonusDisplayEl.className = '';
+                    bonusDisplayEl.style.fontWeight = '600';
+                    bonusDisplayEl.style.fontSize = '15px';
+                }
             }
             function getToday() {
                 const now = new Date();
@@ -2478,24 +2680,7 @@
                 return null;
             }
             function timeToPercent(h, m) { return ((h * 60 + m) / (24 * 60)) * 100; }
-            function getWeekdayName(day) {
-                return dayNames[(currentFirstDayIndex() + day - 1) % 7];
-            }
-
-            function calcMonthStats() {
-                let shifts = 0;
-                for (let d = 1; d <= currentDaysInMonth(); d++) {
-                    const t = getShiftType(d);
-                    if (t === '1' || t === '2') shifts++;
-                }
-                return { shifts, hours: shifts * SHIFT_HOURS };
-            }
-
-            function updateStats() {
-                const { shifts, hours } = calcMonthStats();
-                shiftsCountEl.textContent = shifts;
-                hoursCountEl.textContent = hours + ' ч';
-            }
+            function getWeekdayName(day) { return dayNames[(currentFirstDayIndex() + day - 1) % 7]; }
 
             function buildDayBar(day) {
                 const bar = document.createElement('div');
@@ -2529,6 +2714,9 @@
                 block.className = 'timeline-day-block';
                 if (shiftType === '1') block.classList.add('type-shift1');
                 else if (shiftType === '2') block.classList.add('type-shift2');
+                else if (shiftType === 'absent') block.classList.add('type-absent');
+                else block.classList.add('type-weekend');
+                if (events[day]) block.classList.add('type-event');
 
                 const header = document.createElement('div');
                 header.className = 'timeline-day-header';
@@ -2542,6 +2730,7 @@
                 shiftEl.className = 'timeline-day-shift';
                 if (shiftType === '1') shiftEl.classList.add('shift-1-label');
                 else if (shiftType === '2') shiftEl.classList.add('shift-2-label');
+                else if (shiftType === 'absent') shiftEl.classList.add('absent-label');
                 else shiftEl.classList.add('weekend-label');
                 shiftEl.textContent = shiftLabel;
                 header.appendChild(shiftEl);
@@ -2550,6 +2739,7 @@
                 const track = document.createElement('div');
                 track.className = 'timeline-track';
                 if (shiftType === 'weekend') track.classList.add('track-weekend');
+                if (shiftType === 'absent') track.classList.add('track-absent');
 
                 function addSegment(cls, startPct, endPct) {
                     const seg = document.createElement('div');
@@ -2558,15 +2748,23 @@
                     seg.style.width = (endPct - startPct) + '%';
                     track.appendChild(seg);
                 }
-                if (day - 1 >= 1 && getShiftType(day - 1) === '2') {
-                    addSegment('shift2', 0, timeToPercent(7, 20));
+                if (day - 1 >= 1 && getShiftType(day - 1) === '2') addSegment('shift2', 0, timeToPercent(7, 20));
+                if (shiftType === '1') addSegment('shift1', timeToPercent(7, 20), timeToPercent(19, 20));
+                else if (shiftType === '2') addSegment('shift2', timeToPercent(19, 20), 100);
+                else if (shiftType === 'absent') {
+                    const seg = document.createElement('div');
+                    seg.className = 'timeline-segment absent';
+                    seg.style.left = '0%'; seg.style.width = '100%';
+                    track.appendChild(seg);
                 }
-                if (shiftType === '1') {
-                    addSegment('shift1', timeToPercent(7, 20), timeToPercent(19, 20));
-                } else if (shiftType === '2') {
-                    addSegment('shift2', timeToPercent(19, 20), 100);
+                if (events[day]) {
+                    const ev = events[day];
+                    const [eh, em] = ev.time.split(':').map(Number);
+                    const startPct = timeToPercent(eh, em);
+                    let endPct = startPct + (ev.duration / 24 * 100);
+                    if (endPct > 100) endPct = 100;
+                    addSegment('event', startPct, endPct);
                 }
-
                 if (day === getToday()) {
                     const now = new Date();
                     const nowPct = timeToPercent(now.getHours(), now.getMinutes());
@@ -2624,7 +2822,13 @@
                 }
                 for (let d = 1; d <= daysInMonth; d++) {
                     const cell = document.createElement('div');
+                    const isExtraDay = isExtra(d);
+                    const isEventDay = hasEvent(d);
+                    const conflict = hasConflict(d);
                     let cls = 'day-cell ' + getShiftClass(d);
+                    if (isExtraDay) cls += ' ' + getExtraClass(d);
+                    if (isEventDay) cls += ' event-cell';
+                    if (conflict) cls += ' conflict';
                     if (d === today) cls += ' today';
                     cell.className = cls;
                     cell.dataset.day = d;
@@ -2638,9 +2842,20 @@
 
                     const label = document.createElement('div');
                     label.className = 'shift-label';
-                    label.textContent = getShiftLabel(d);
+                    let labelText = getShiftLabel(d);
+                    if (isExtraDay) labelText += ' ✦' + extras[d];
+                    if (isEventDay) labelText += ' 🎉';
+                    label.textContent = labelText;
                     cell.appendChild(label);
 
+                    cell.addEventListener('click', function() {
+                        if (swipeTriggered) { longPressTriggered = false; return; }
+                        if (shouldIgnoreTap()) { longPressTriggered = false; return; }
+                        if (longPressTriggered) { longPressTriggered = false; return; }
+                        const day = parseInt(this.dataset.day);
+                        if (!day) return;
+                        openModal(day);
+                    });
                     cell.addEventListener('touchstart', function(e) {
                         if (shouldIgnoreTap()) return;
                         if (e.touches && e.touches.length > 1) {
@@ -2685,9 +2900,174 @@
                     gridEl.appendChild(empty);
                 }
 
-                updateStats();
+                // ----- СТАТИСТИКА -----
+                const extraKeys = Object.keys(extras);
+                extraCountEl.textContent = extraKeys.length;
+
+                restBeforeRow.style.display = 'none';
+                restAfterRow.style.display = 'none';
+                nextShiftRow.style.display = 'none';
+                eventRestBeforeRow.style.display = 'none';
+                eventRestAfterRow.style.display = 'none';
+                eventsListRow.style.display = 'none';
+
+                if (extraKeys.length > 0) {
+                    const lastExtraDay = parseInt(extraKeys[extraKeys.length - 1]);
+                    const lastExtraShift = extras[lastExtraDay];
+                    const next = findNextShift(lastExtraDay);
+                    let afterRest = null, afterRestStr = '—', nextInfo = '—';
+                    if (next) {
+                        afterRest = calcRestBetween(lastExtraDay, lastExtraShift, next.day, next.shift);
+                        afterRestStr = formatRestTime(afterRest);
+                        nextInfo = `${next.shift}-я (${shiftStart[next.shift]}–${shiftEnd[next.shift]}) ${next.day} ${MONTH_NAMES_SHORT[currentMonthKey].toLowerCase()}`;
+                    }
+                    const prev = findPreviousShift(lastExtraDay);
+                    let beforeRest = null;
+                    if (prev) beforeRest = calcRestBetween(prev.day, prev.shift, lastExtraDay, lastExtraShift);
+                    if (beforeRest !== null && isFinite(beforeRest)) {
+                        restBeforeRow.style.display = 'flex';
+                        restBeforeDisplayEl.textContent = formatRestTime(beforeRest);
+                        updateProgressBar(progressBefore, beforeRest, progressBeforeLabel);
+                    }
+                    if (afterRest !== null && isFinite(afterRest)) {
+                        restAfterRow.style.display = 'flex';
+                        const status = getRestStatus(afterRest);
+                        restAfterDisplayEl.innerHTML = `<span class="rest-badge ${status}">${afterRestStr}</span>`;
+                        updateProgressBar(progressAfter, afterRest, progressAfterLabel);
+                    }
+                    if (next) {
+                        nextShiftRow.style.display = 'flex';
+                        nextShiftDisplayEl.textContent = nextInfo;
+                    }
+                } else {
+                    updateProgressBar(progressBefore, null, progressBeforeLabel);
+                    updateProgressBar(progressAfter, null, progressAfterLabel);
+                }
+
+                const eventKeys = Object.keys(events).sort((a, b) => a - b);
+                if (eventKeys.length > 0) {
+                    eventsListRow.style.display = 'flex';
+                    eventsListEl.innerHTML = '';
+                    eventKeys.forEach(day => {
+                        const ev = events[day];
+                        const item = document.createElement('div');
+                        item.className = 'event-item';
+                        item.innerHTML = `
+                            <span class="event-date">${day} ${MONTH_NAMES_SHORT[currentMonthKey].toLowerCase()}</span>
+                            <span class="event-time">${ev.time} · ${ev.duration}ч</span>
+                            <button class="event-del" data-day="${day}" title="Удалить">✕</button>
+                        `;
+                        eventsListEl.appendChild(item);
+                    });
+                    eventsListEl.querySelectorAll('.event-del').forEach(btn => {
+                        btn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            const day = parseInt(this.dataset.day);
+                            if (events[day]) { delete events[day]; saveData(); render(); }
+                        });
+                    });
+
+                    const lastEventDay = parseInt(eventKeys[eventKeys.length - 1]);
+                    const lastEvent = events[lastEventDay];
+
+                    const prevShift = findPreviousShift(lastEventDay);
+                    let restBeforeEvent = null;
+                    if (prevShift) {
+                        restBeforeEvent = calcRestBetweenShiftAndEvent(prevShift.day, prevShift.shift, lastEventDay, lastEvent.time, true);
+                    }
+                    const nextShift = findNextShift(lastEventDay);
+                    let restAfterEvent = null;
+                    if (nextShift) {
+                        const [eh, em] = lastEvent.time.split(':').map(Number);
+                        const eventEnd = new Date(currentYear(), currentMonthIndexJS(), lastEventDay);
+                        eventEnd.setHours(eh, em, 0, 0);
+                        eventEnd.setTime(eventEnd.getTime() + lastEvent.duration * 3600 * 1000);
+                        const shiftStartDate = new Date(currentYear(), currentMonthIndexJS(), nextShift.day);
+                        const [sh, sm] = shiftStart[nextShift.shift].split(':').map(Number);
+                        shiftStartDate.setHours(sh, sm, 0, 0);
+                        let diffMs = shiftStartDate - eventEnd;
+                        if (diffMs < 0) diffMs += 24 * 3600 * 1000;
+                        restAfterEvent = diffMs / (3600 * 1000);
+                    }
+                    if (restBeforeEvent !== null && isFinite(restBeforeEvent)) {
+                        eventRestBeforeRow.style.display = 'flex';
+                        eventRestBeforeDisplay.textContent = formatRestTime(restBeforeEvent);
+                        updateProgressBar(progressEventBefore, restBeforeEvent, progressEventBeforeLabel);
+                    } else {
+                        updateProgressBar(progressEventBefore, null, progressEventBeforeLabel);
+                    }
+                    if (restAfterEvent !== null && isFinite(restAfterEvent)) {
+                        eventRestAfterRow.style.display = 'flex';
+                        const status = getRestStatus(restAfterEvent);
+                        eventRestAfterDisplay.innerHTML = `<span class="rest-badge ${status}">${formatRestTime(restAfterEvent)}</span>`;
+                        updateProgressBar(progressEventAfter, restAfterEvent, progressEventAfterLabel);
+                    } else {
+                        updateProgressBar(progressEventAfter, null, progressEventAfterLabel);
+                    }
+                } else {
+                    eventsListEl.innerHTML = '';
+                    updateProgressBar(progressEventBefore, null, progressEventBeforeLabel);
+                    updateProgressBar(progressEventAfter, null, progressEventAfterLabel);
+                }
+
+                updateBonusDisplay();
             }
 
+            function openModal(day) {
+                selectedDay = day;
+                const dayType = getShiftType(day);
+                modalDateText.innerHTML = `На <strong>${day}</strong> ${currentMonth().name.toLowerCase()}`;
+
+                modalShift1.style.background = '#f9eec1';
+                modalShift1.style.border = '1px solid #e3d09b';
+                modalShift1.textContent = '1 смена';
+
+                modalShift2.style.background = '#c7e0f5';
+                modalShift2.style.border = '1px solid #8fbad9';
+                modalShift2.textContent = '2 смена';
+
+                modalAbsent.style.background = '#e74c3c';
+                modalAbsent.style.border = '2px solid #c0392b';
+                modalAbsent.textContent = '✕ Отсутствовал';
+
+                modalEvent.style.background = '#9b59b6';
+                modalEvent.style.border = '2px solid #6b21a8';
+                modalEvent.textContent = '🎉 Мероприятие';
+
+                eventFormContainer.style.display = 'none';
+                mainBtnGroup.style.display = 'flex';
+                eventConflictWarning.style.display = 'none';
+
+                if (dayType === 'absent') {
+                    modalAbsent.style.background = '#c0392b';
+                    modalAbsent.style.border = '2px solid #e74c3c';
+                    modalAbsent.textContent = '✕ Отсутствовал ✓';
+                } else if (dayType === '1') {
+                    modalShift1.style.background = '#f5d742';
+                    modalShift1.style.border = '2px solid #d4a800';
+                    modalShift1.textContent = '1 смена ✓';
+                } else if (dayType === '2') {
+                    modalShift2.style.background = '#4a9eff';
+                    modalShift2.style.border = '2px solid #1a7ae0';
+                    modalShift2.textContent = '2 смена ✓';
+                }
+
+                if (events[day]) {
+                    eventFormContainer.style.display = 'block';
+                    mainBtnGroup.style.display = 'none';
+                    eventTimeInput.value = events[day].time;
+                    eventDurationInput.value = events[day].duration;
+                    checkEventConflict(day, events[day].time, events[day].duration);
+                }
+                applyModalScale(editModal);
+                modalOverlay.classList.add('active');
+            }
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+                selectedDay = null;
+                eventFormContainer.style.display = 'none';
+                mainBtnGroup.style.display = 'flex';
+            }
             function openTimeline(day) {
                 renderTimelines(day);
                 applyModalScale(timelineModal);
@@ -2695,10 +3075,51 @@
             }
             function closeTimeline() { timelineOverlay.classList.remove('active'); }
 
+            function checkEventConflict(day, time, duration) {
+                if (!day) return;
+                const shift = getShiftType(day);
+                if (shift !== '1' && shift !== '2') {
+                    eventConflictWarning.style.display = 'none'; return;
+                }
+                const [eh, em] = time.split(':').map(Number);
+                const eventStart = new Date(currentYear(), currentMonthIndexJS(), day);
+                eventStart.setHours(eh, em, 0, 0);
+                const eventEnd = new Date(eventStart.getTime() + duration * 3600 * 1000);
+                const shiftStartDate = new Date(currentYear(), currentMonthIndexJS(), day);
+                const [sh, sm] = shiftStart[shift].split(':').map(Number);
+                shiftStartDate.setHours(sh, sm, 0, 0);
+                const shiftEndDate = new Date(shiftStartDate.getTime() + 12 * 3600 * 1000);
+                if (shift === '2') shiftEndDate.setDate(shiftEndDate.getDate() + 1);
+                if (eventStart < shiftEndDate && eventEnd > shiftStartDate) {
+                    eventConflictWarning.style.display = 'block';
+                    eventConflictWarning.textContent = '⚠️ Мероприятие пересекается со сменой!';
+                } else {
+                    eventConflictWarning.style.display = 'none';
+                }
+            }
+            function setExtra(day, shift) {
+                if (!day) return;
+                delete absents[day];
+                extras[day] = shift;
+                saveData(); render(); closeModal();
+            }
+            function setAbsent(day) {
+                if (!day) return;
+                delete extras[day];
+                absents[day] = true;
+                saveData(); render(); closeModal();
+            }
+            function removeDay(day) {
+                if (!day) return;
+                delete extras[day]; delete absents[day]; delete events[day];
+                saveData(); render(); closeModal();
+            }
+
             function switchMonth(newKey) {
                 if (newKey === currentMonthKey) return;
                 currentMonthKey = newKey;
                 localStorage.setItem('shiftScheduleMonth', newKey.toString());
+                loadData(currentMonthKey);
                 updateMonthTitle();
                 updateMonthNavButtons();
                 render();
@@ -2812,11 +3233,51 @@
                 if (idx < MONTH_ORDER.length - 1) switchMonth(MONTH_ORDER[idx + 1]);
             });
 
-            timelineClose.addEventListener('click', closeTimeline);
-            timelineOverlay.addEventListener('click', e => {
-                if (e.target === timelineOverlay) closeTimeline();
+            modalShift1.addEventListener('click', () => { if (selectedDay) setExtra(selectedDay, '1'); });
+            modalShift2.addEventListener('click', () => { if (selectedDay) setExtra(selectedDay, '2'); });
+            modalAbsent.addEventListener('click', () => { if (selectedDay) setAbsent(selectedDay); });
+
+            modalEvent.addEventListener('click', () => {
+                if (!selectedDay) return;
+                eventFormContainer.style.display = 'block';
+                mainBtnGroup.style.display = 'none';
+                if (events[selectedDay]) {
+                    eventTimeInput.value = events[selectedDay].time;
+                    eventDurationInput.value = events[selectedDay].duration;
+                } else {
+                    eventTimeInput.value = '19:00';
+                    eventDurationInput.value = 3;
+                }
+                checkEventConflict(selectedDay, eventTimeInput.value, parseFloat(eventDurationInput.value));
             });
 
+            eventTimeInput.addEventListener('input', () => {
+                if (selectedDay) checkEventConflict(selectedDay, eventTimeInput.value, parseFloat(eventDurationInput.value));
+            });
+            eventDurationInput.addEventListener('input', () => {
+                if (selectedDay) checkEventConflict(selectedDay, eventTimeInput.value, parseFloat(eventDurationInput.value));
+            });
+            modalEventSave.addEventListener('click', () => {
+                if (!selectedDay) return;
+                const time = eventTimeInput.value || '19:00';
+                let duration = parseFloat(eventDurationInput.value);
+                if (isNaN(duration) || duration <= 0) duration = 3;
+                events[selectedDay] = { time, duration };
+                saveData(); render(); closeModal();
+            });
+            modalEventCancel.addEventListener('click', () => {
+                eventFormContainer.style.display = 'none';
+                mainBtnGroup.style.display = 'flex';
+                eventConflictWarning.style.display = 'none';
+            });
+            modalRemove.addEventListener('click', () => { if (selectedDay) removeDay(selectedDay); });
+            modalCancel.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+            timelineClose.addEventListener('click', closeTimeline);
+            timelineOverlay.addEventListener('click', e => { if (e.target === timelineOverlay) closeTimeline(); });
+
+            // СТАРТ ГРАФИКА
+            loadData(currentMonthKey);
             updateMonthTitle();
             updateMonthNavButtons();
             render();
@@ -2827,7 +3288,6 @@
         })();
     </script>
 
-    <!-- ===== РЕГИСТРАЦИЯ SERVICE WORKER (ОФЛАЙН-РЕЖИМ) ===== -->
     <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
