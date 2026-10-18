@@ -395,49 +395,141 @@
         .shift-total-timer + .money-counter-block { margin-top: 0; }
         .money-counter-block.hidden { display: none; }
 
-        .work-duration-block {
-            margin: 12px auto 8px auto;
-            padding: 10px 18px;
-            border-radius: 40px;
-            background: rgba(52, 152, 219, 0.08);
-            border: 1px solid rgba(52, 152, 219, 0.2);
+        /* ===== КНОПКА "МОИ ДАННЫЕ" (внизу приложения) ===== */
+        .info-toggle-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            font-size: 16px;
-            font-weight: 400;
-            letter-spacing: 0.3px;
-            backdrop-filter: blur(2px);
-            transition: all 0.3s ease;
-            width: fit-content;
-            max-width: 100%;
-            flex-wrap: wrap;
-        }
-        .work-duration-block .work-duration-label {
-            font-size: 13px;
-            opacity: 0.75;
-            font-weight: 400;
-        }
-        .work-duration-block .work-duration-value {
-            font-weight: 700;
-            font-size: 17px;
-            font-variant-numeric: tabular-nums;
+            gap: 8px;
+            width: 100%;
+            margin: 14px 0 8px 0;
+            padding: 12px;
+            border: 1px dashed rgba(52, 152, 219, 0.4);
+            border-radius: 14px;
+            background: rgba(52, 152, 219, 0.05);
             color: #2980b9;
-            transition: color 0.3s ease;
-            white-space: nowrap;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        body.night-shift .work-duration-block {
-            background: rgba(52, 152, 219, 0.06);
-            border-color: rgba(52, 152, 219, 0.15);
+        .info-toggle-btn:hover {
+            background: rgba(52, 152, 219, 0.12);
+            border-color: rgba(52, 152, 219, 0.7);
         }
-        body.night-shift .work-duration-block .work-duration-value {
+        .info-toggle-btn:active { transform: scale(0.98); }
+        .info-toggle-btn .arrow { font-size: 12px; }
+        body.night-shift .info-toggle-btn {
             color: #74c0fc;
+            border-color: rgba(116, 192, 252, 0.4);
+            background: rgba(116, 192, 252, 0.05);
         }
+        body.night-shift .info-toggle-btn:hover {
+            background: rgba(116, 192, 252, 0.12);
+            border-color: rgba(116, 192, 252, 0.7);
+        }
+
+        /* ===== МОДАЛЬНОЕ ОКНО "МОИ ДАННЫЕ" ===== */
+        .info-modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            display: none; justify-content: center; align-items: center;
+            z-index: 9999; padding: 20px;
+        }
+        .info-modal-overlay.active { display: flex; animation: fadeIn 0.25s ease; }
+        .info-modal {
+            border-radius: 20px; padding: 24px 20px 18px;
+            max-width: 420px; width: 100%;
+            background: #fff; color: #333;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-height: 90vh; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 14px;
+        }
+        body.night-shift .info-modal { background: #2a2a4a; color: #e0e0e0; border: 1px solid #4a4a7a; }
+
+        .info-modal h3 {
+            text-align: center; font-size: 18px; margin-bottom: 4px;
+            color: #1a3c6e;
+        }
+        body.night-shift .info-modal h3 { color: #a8a8e0; }
+
+        .info-modal-close {
+            position: absolute; top: 12px; right: 12px;
+            background: none; border: none; font-size: 20px;
+            cursor: pointer; width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; color: #95a5a6; transition: 0.2s;
+        }
+        .info-modal-close:hover { background: #f8f9fa; color: #e74c3c; }
+        body.night-shift .info-modal-close { color: #aaa; }
+        body.night-shift .info-modal-close:hover { background: #3a3a5a; color: #ff6b6b; }
+
+        .info-modal-row {
+            display: flex; flex-direction: column; gap: 4px;
+            padding: 10px 14px; border-radius: 12px;
+            background: rgba(52, 152, 219, 0.07);
+            border-left: 3px solid #3498db;
+        }
+        body.night-shift .info-modal-row {
+            background: rgba(52, 152, 219, 0.1);
+            border-left-color: #74c0fc;
+        }
+
+        .info-modal-label { font-size: 12px; opacity: 0.75; font-weight: 500; }
+        .info-modal-value { font-size: 15px; font-weight: 700; word-break: break-word; }
+
+        .info-modal-btn {
+            margin-top: 6px; padding: 12px;
+            border: none; border-radius: 14px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: #fff; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: 0.2s;
+        }
+        .info-modal-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(52,152,219,0.35); }
+        .info-modal-btn:active { transform: translateY(0); }
+
+        /* ===== БЕГУЩАЯ СТРОКА НАПОМИНАНИЯ О МЕДКОМИССИИ ===== */
+        .medcom-reminder {
+            display: none;
+            margin: 10px 0;
+            padding: 0;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #fff3cd, #ffeaa7, #fff3cd);
+            border: 1px solid #f39c12;
+            overflow: hidden;
+            position: relative;
+        }
+        .medcom-reminder.visible { display: block; }
+        .medcom-reminder-inner {
+            display: inline-block;
+            white-space: nowrap;
+            padding: 10px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #8a6d00;
+            animation: marquee 18s linear infinite;
+            will-change: transform;
+        }
+        .medcom-reminder-inner.paused { animation-play-state: paused; }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        body.night-shift .medcom-reminder {
+            background: linear-gradient(90deg, #3d2e0a, #5c450e, #3d2e0a);
+            border-color: #d4a800;
+        }
+        body.night-shift .medcom-reminder-inner { color: #ffd54f; }
+
         @media (max-width: 420px) {
-            .work-duration-block { font-size: 14px; padding: 8px 14px; gap: 7px; }
-            .work-duration-block .work-duration-label { font-size: 11px; }
-            .work-duration-block .work-duration-value { font-size: 15px; }
+            .info-modal { padding: 20px 16px 14px; }
+            .info-modal-row { padding: 8px 12px; }
+            .info-modal-label { font-size: 11px; }
+            .info-modal-value { font-size: 14px; }
         }
 
         #timer-app .timer-display {
@@ -1244,9 +1336,9 @@
             <span class="money-currency">₽</span>
         </div>
 
-        <div class="work-duration-block" id="workDurationBlock">
-            <span class="work-duration-label">📅 Работаю с 10.07.2025:</span>
-            <span class="work-duration-value" id="workDurationValue">--</span>
+        <!-- ===== БЕГУЩАЯ СТРОКА НАПОМИНАНИЯ О МЕДКОМИССИИ ===== -->
+        <div class="medcom-reminder" id="medcomReminder">
+            <div class="medcom-reminder-inner" id="medcomReminderInner"></div>
         </div>
 
         <div class="shift-info" id="shiftInfo">Смена: --</div>
@@ -1307,6 +1399,13 @@
         <button class="copy-btn" id="copyBtn" onclick="copySignatureToClipboard()">
             📋 Скопировать подпись ещё раз
         </button>
+
+        <!-- ===== КНОПКА "МОИ ДАННЫЕ" (В САМОМ НИЗУ ПРИЛОЖЕНИЯ) ===== -->
+        <button class="info-toggle-btn" id="infoToggleBtn" onclick="openInfoModal()">
+            <span>ℹ️ Мои данные (стаж, медкомиссия, табельный)</span>
+            <span class="arrow">▲</span>
+        </button>
+
         <div class="footer">© Галагуцкий Е.В.</div>
     </div>
 
@@ -1468,9 +1567,47 @@
         </div>
     </div>
 
+    <!-- ===== МОДАЛЬНОЕ ОКНО "МОИ ДАННЫЕ" ===== -->
+    <div class="info-modal-overlay" id="infoModalOverlay">
+        <div class="info-modal" id="infoModal">
+            <button class="info-modal-close" onclick="closeInfoModal()">✕</button>
+            <h3>ℹ️ Мои данные</h3>
+
+            <div class="info-modal-row">
+                <span class="info-modal-label">📅 Работаю с 10.07.2025:</span>
+                <span class="info-modal-value" id="workDurationValue">--</span>
+            </div>
+
+            <div class="info-modal-row">
+                <span class="info-modal-label">🩺 Медкомиссия:</span>
+                <span class="info-modal-value" id="medcomValue">--</span>
+            </div>
+
+            <div class="info-modal-row">
+                <span class="info-modal-label">🔢 Табельный номер:</span>
+                <span class="info-modal-value" id="tabnumValue">--</span>
+            </div>
+
+            <button class="info-modal-btn" onclick="closeInfoModal()">Закрыть</button>
+        </div>
+    </div>
+
     <script>
         // ===== НАСТРОЙКА ВКОНТАКТЕ =====
         const VK_GROUP_URL = 'https://vk.com/jmkaluga';
+
+        // ===== ДАННЫЕ МЕДКОМИССИИ И ТАБЕЛЬНОГО НОМЕРА =====
+        // Медкомиссия для Галагуцкого Е.В. пройдена 25.06.2026. Следующая — до 25.06.2027.
+        const MEDCOM_PASSED_DATE_GALAGUTSKY = new Date('2026-06-25T00:00:00');
+        const MEDCOM_NEXT_DEADLINE_GALAGUTSKY = new Date('2027-06-25T00:00:00');
+        const TABNUM_GALAGUTSKY = '44001640';
+        // Для Галагуцкой С.В. данные пока не заданы — будут добавлены позже
+        const MEDCOM_PASSED_DATE_GALAGUTSKAYA = null;
+        const MEDCOM_NEXT_DEADLINE_GALAGUTSKAYA = null;
+        const TABNUM_GALAGUTSKAYA = null;
+
+        // За сколько дней до дедлайна начинать напоминание (30 дней = за месяц)
+        const REMINDER_DAYS_BEFORE = 30;
 
         let timerInterval = null;
         let scheduleInterval = null;
@@ -1480,6 +1617,7 @@
         let currentSignatureType = 1;
         let seasonInterval = null;
         let currentSeason = null;
+        let reminderInterval = null;
 
         const HOLIDAYS = [
             { date: '01-01', name: 'Новый год', icon: '🎄', className: 'holiday-new-year' },
@@ -1538,6 +1676,109 @@
             el.textContent = result;
         }
 
+        // ===== ОБНОВЛЕНИЕ БЛОКА МЕДКОМИССИИ (в модалке) =====
+        function updateMedcomBlock() {
+            const medcomValue = document.getElementById('medcomValue');
+            if (!medcomValue) return;
+
+            if (currentSignatureType === 1) {
+                if (MEDCOM_PASSED_DATE_GALAGUTSKY) {
+                    const now = new Date();
+                    const diffMs = now - MEDCOM_PASSED_DATE_GALAGUTSKY;
+                    const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                    const years = Math.floor(totalDays / 365);
+                    const months = Math.floor((totalDays % 365) / 30);
+                    const days = (totalDays % 365) % 30;
+                    let result = '';
+                    if (years > 0) result += years + ' ' + declension(years, 'год', 'года', 'лет') + ' ';
+                    if (months > 0) result += months + ' ' + declension(months, 'месяц', 'месяца', 'месяцев') + ' ';
+                    if (days > 0 && years === 0) result += days + ' ' + declension(days, 'день', 'дня', 'дней') + ' ';
+                    medcomValue.textContent = '✅ пройдена 25.06.2026 (' + result.trim() + ')';
+                } else {
+                    medcomValue.textContent = '❌ не пройдена';
+                }
+            } else {
+                medcomValue.textContent = '— данные не внесены';
+            }
+        }
+
+        // ===== ОБНОВЛЕНИЕ БЛОКА ТАБЕЛЬНОГО НОМЕРА (в модалке) =====
+        function updateTabnumBlock() {
+            const tabnumValue = document.getElementById('tabnumValue');
+            if (!tabnumValue) return;
+            if (currentSignatureType === 1) {
+                tabnumValue.textContent = TABNUM_GALAGUTSKY;
+            } else {
+                tabnumValue.textContent = '— данные не внесены';
+            }
+        }
+
+        // ===== ЛОГИКА БЕГУЩЕЙ СТРОКИ НАПОМИНАНИЯ О МЕДКОМИССИИ =====
+        function getMedcomDeadline() {
+            if (currentSignatureType === 1) return MEDCOM_NEXT_DEADLINE_GALAGUTSKY;
+            return MEDCOM_NEXT_DEADLINE_GALAGUTSKAYA;
+        }
+
+        function getMedcomPassedDate() {
+            if (currentSignatureType === 1) return MEDCOM_PASSED_DATE_GALAGUTSKY;
+            return MEDCOM_PASSED_DATE_GALAGUTSKAYA;
+        }
+
+        function formatDateRu(date) {
+            return `${formatTime(date.getDate())}.${formatTime(date.getMonth() + 1)}.${date.getFullYear()}`;
+        }
+
+        function getDaysUntil(date) {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const target = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            return Math.round((target - today) / (1000 * 60 * 60 * 24));
+        }
+
+        function updateMedcomReminder() {
+            const reminder = document.getElementById('medcomReminder');
+            const inner = document.getElementById('medcomReminderInner');
+            if (!reminder || !inner) return;
+
+            const deadline = getMedcomDeadline();
+
+            if (!deadline) {
+                reminder.classList.remove('visible');
+                return;
+            }
+
+            const daysLeft = getDaysUntil(deadline);
+
+            // Показываем напоминание, если до дедлайна осталось <= 30 дней
+            if (daysLeft <= REMINDER_DAYS_BEFORE) {
+                reminder.classList.add('visible');
+                let text = '';
+                if (daysLeft < 0) {
+                    text = `🔴 ПРОСРОЧЕНО: медкомиссия должна была быть пройдена до ${formatDateRu(deadline)}! Срочно пройдите медкомиссию! 🔴`;
+                } else if (daysLeft === 0) {
+                    text = `🔴 СЕГОДНЯ последний день: медкомиссия должна быть пройдена до ${formatDateRu(deadline)}! 🔴`;
+                } else {
+                    text = `⚠️ Напоминание: медкомиссию нужно пройти до ${formatDateRu(deadline)}. Осталось ${daysLeft} ${declension(daysLeft, 'день', 'дня', 'дней')}! Не забудьте записаться. ⚠️`;
+                }
+                inner.textContent = text;
+                inner.classList.remove('paused');
+            } else {
+                reminder.classList.remove('visible');
+            }
+        }
+
+        // ===== ОТКРЫТИЕ/ЗАКРЫТИЕ МОДАЛКИ "МОИ ДАННЫЕ" =====
+        function openInfoModal() {
+            updateWorkDuration();
+            updateMedcomBlock();
+            updateTabnumBlock();
+            document.getElementById('infoModalOverlay').classList.add('active');
+        }
+
+        function closeInfoModal() {
+            document.getElementById('infoModalOverlay').classList.remove('active');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             startTimer();
             initInternetIndicator();
@@ -1546,10 +1787,26 @@
             checkAndApplyHolidayTheme();
             checkAndStartSeasonEffect();
             updateSchedule();
-            updateWorkDuration();
+            updateMedcomBlock();
+            updateTabnumBlock();
+            updateMedcomReminder();
             if (scheduleInterval) clearInterval(scheduleInterval);
             scheduleInterval = setInterval(updateSchedule, 1000);
             setInterval(updateWorkDuration, 60000);
+            setInterval(updateMedcomBlock, 60000);
+            // Проверка напоминания раз в минуту
+            if (reminderInterval) clearInterval(reminderInterval);
+            reminderInterval = setInterval(updateMedcomReminder, 60000);
+
+            // Закрытие модалки "Мои данные" по клику на фон и Esc
+            const infoOverlay = document.getElementById('infoModalOverlay');
+            if (infoOverlay) infoOverlay.addEventListener('click', e => {
+                if (e.target === infoOverlay) closeInfoModal();
+            });
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') closeInfoModal();
+            });
+
             console.log('✅ Таймер смены загружен (автономный режим)');
         });
 
@@ -2285,6 +2542,9 @@
             document.getElementById('btnSignature2').classList.toggle('active', type === 2);
             localStorage.setItem('signatureType', type.toString());
             updateMoneyCounter(new Date());
+            updateMedcomBlock();
+            updateTabnumBlock();
+            updateMedcomReminder();
             checkAndApplyHolidayTheme();
             updateSchedule();
         }
