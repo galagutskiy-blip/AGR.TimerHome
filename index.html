@@ -1341,7 +1341,9 @@
             <div class="medcom-reminder-inner" id="medcomReminderInner"></div>
         </div>
 
-        <div class="shift-info" id="shiftInfo">Смена: --</div>
+        <!-- Блок скрыт по запросу -->
+        <div class="shift-info" id="shiftInfo" style="display: none;">Смена: --</div>
+        
         <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
             <div class="progress-milestone" style="left: 25%;" id="milestone1" title="10:20"></div>
@@ -2217,8 +2219,7 @@
             const shiftInfo = getCurrentShiftInfo(now);
             const shiftStart = shiftInfo.start;
             const shiftEnd = shiftInfo.end;
-            const shiftInfoEl = document.getElementById('shiftInfo');
-            if (shiftInfoEl) shiftInfoEl.textContent = shiftInfo.shiftText;
+            // Блок с текстом смены удален из отображения
             updateShiftTheme();
             updateShiftTotalTimer(now, shiftStart, shiftEnd, shiftInfo);
             updateProgressBar(now, shiftStart, shiftEnd, shiftInfo);
@@ -2329,7 +2330,6 @@
         function showTimeToNextShift(now) {
             const mainTimer = document.getElementById('mainTimer');
             const timerEvent = document.getElementById('timerEvent');
-            const shiftInfoElement = document.getElementById('shiftInfo');
             const timerDisplay = document.getElementById('timerDisplay');
             const progressPercentage = document.getElementById('progressPercentage');
             const totalMinutes = now.getHours() * 60 + now.getMinutes();
@@ -2337,14 +2337,11 @@
             let nextShiftStart;
             if (totalMinutes < 440) {
                 nextShiftStart = createDateTime(today, 7, 20);
-                if (shiftInfoElement) shiftInfoElement.textContent = "Следующая: Дневная смена (07:20 - 19:20)";
             } else if (totalMinutes < 1160) {
                 nextShiftStart = createDateTime(today, 19, 20);
-                if (shiftInfoElement) shiftInfoElement.textContent = "Следующая: Ночная смена (19:20 - 07:20)";
             } else {
                 const tm = new Date(today); tm.setDate(tm.getDate() + 1);
                 nextShiftStart = createDateTime(tm, 7, 20);
-                if (shiftInfoElement) shiftInfoElement.textContent = "Следующая: Дневная смена (07:20 - 19:20)";
             }
             if (mainTimer) mainTimer.textContent = calculateTimeRemaining(now, nextShiftStart);
             if (timerEvent) timerEvent.textContent = "До начала следующей смены";
