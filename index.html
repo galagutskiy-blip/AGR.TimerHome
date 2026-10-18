@@ -1576,7 +1576,7 @@
             <h3>ℹ️ Мои данные</h3>
 
             <div class="info-modal-row">
-                <span class="info-modal-label">📅 Работаю с 10.07.2025:</span>
+                <span class="info-modal-label">📅 Работаю с:</span>
                 <span class="info-modal-value" id="workDurationValue">--</span>
             </div>
 
@@ -1585,7 +1585,7 @@
                 <span class="info-modal-value" id="medcomValue">--</span>
             </div>
 
-            <div class="info-modal-row">
+            <div class="info-modal-row" id="tabnumRow">
                 <span class="info-modal-label">🔢 Табельный номер:</span>
                 <span class="info-modal-value" id="tabnumValue">--</span>
             </div>
@@ -1599,14 +1599,15 @@
         const VK_GROUP_URL = 'https://vk.com/jmkaluga';
 
         // ===== ДАННЫЕ МЕДКОМИССИИ И ТАБЕЛЬНОГО НОМЕРА =====
-        // Медкомиссия для Галагуцкого Е.В. пройдена 25.06.2026. Следующая — до 25.06.2027.
+        // Галагуцкий Е.В.: медкомиссия пройдена 25.06.2026. Следующая — до 25.06.2027.
         const MEDCOM_PASSED_DATE_GALAGUTSKY = new Date('2026-06-25T00:00:00');
         const MEDCOM_NEXT_DEADLINE_GALAGUTSKY = new Date('2027-06-25T00:00:00');
         const TABNUM_GALAGUTSKY = '44001640';
-        // Для Галагуцкой С.В. данные пока не заданы — будут добавлены позже
-        const MEDCOM_PASSED_DATE_GALAGUTSKAYA = null;
-        const MEDCOM_NEXT_DEADLINE_GALAGUTSKAYA = null;
-        const TABNUM_GALAGUTSKAYA = null;
+
+        // Галагуцкая С.В.: медкомиссия пройдена 28.01.2026. Следующая — до 28.01.2027.
+        const MEDCOM_PASSED_DATE_GALAGUTSKAYA = new Date('2026-01-28T00:00:00');
+        const MEDCOM_NEXT_DEADLINE_GALAGUTSKAYA = new Date('2027-01-28T00:00:00');
+        const TABNUM_GALAGUTSKAYA = null; // табельного номера нет
 
         // За сколько дней до дедлайна начинать напоминание (30 дней = за месяц)
         const REMINDER_DAYS_BEFORE = 30;
@@ -1649,7 +1650,12 @@
             { date: '08-01', year: 1984, name: 'Мой день рождения', relation: 'я', icon: '🎂' }
         ];
 
-        const WORK_START_DATE = new Date('2025-07-10T00:00:00');
+        const WORK_START_DATE_GALAGUTSKY = new Date('2025-07-10T00:00:00');
+        const WORK_START_DATE_GALAGUTSKAYA = new Date('2026-01-27T00:00:00');
+
+        function getWorkStartDate() {
+            return currentSignatureType === 1 ? WORK_START_DATE_GALAGUTSKY : WORK_START_DATE_GALAGUTSKAYA;
+        }
 
         function declension(number, one, two, five) {
             const n = Math.abs(number) % 100;
@@ -1663,9 +1669,10 @@
         function updateWorkDuration() {
             const el = document.getElementById('workDurationValue');
             if (!el) return;
+            const startDate = getWorkStartDate();
             const now = new Date();
-            const diffMs = now - WORK_START_DATE;
-            if (diffMs < 0) { el.textContent = 'ещё не начал'; return; }
+            const diffMs = now - startDate;
+            if (diffMs < 0) { el.textContent = 'ещё не начал(а)'; return; }
             const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
             const years = Math.floor(totalDays / 365);
             const months = Math.floor((totalDays % 365) / 30);
@@ -1683,35 +1690,37 @@
             const medcomValue = document.getElementById('medcomValue');
             if (!medcomValue) return;
 
-            if (currentSignatureType === 1) {
-                if (MEDCOM_PASSED_DATE_GALAGUTSKY) {
-                    const now = new Date();
-                    const diffMs = now - MEDCOM_PASSED_DATE_GALAGUTSKY;
-                    const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-                    const years = Math.floor(totalDays / 365);
-                    const months = Math.floor((totalDays % 365) / 30);
-                    const days = (totalDays % 365) % 30;
-                    let result = '';
-                    if (years > 0) result += years + ' ' + declension(years, 'год', 'года', 'лет') + ' ';
-                    if (months > 0) result += months + ' ' + declension(months, 'месяц', 'месяца', 'месяцев') + ' ';
-                    if (days > 0 && years === 0) result += days + ' ' + declension(days, 'день', 'дня', 'дней') + ' ';
-                    medcomValue.textContent = '✅ пройдена 25.06.2026 (' + result.trim() + ')';
-                } else {
-                    medcomValue.textContent = '❌ не пройдена';
-                }
+            const passed = currentSignatureType === 1 ? MEDCOM_PASSED_DATE_GALAGUTSKY : MEDCOM_PASSED_DATE_GALAGUTSKAYA;
+
+            if (passed) {
+                const now = new Date();
+                const diffMs = now - passed;
+                const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                const years = Math.floor(totalDays / 365);
+                const months = Math.floor((totalDays % 365) / 30);
+                const days = (totalDays % 365) % 30;
+                let result = '';
+                if (years > 0) result += years + ' ' + declension(years, 'год', 'года', 'лет') + ' ';
+                if (months > 0) result += months + ' ' + declension(months, 'месяц', 'месяца', 'месяцев') + ' ';
+                if (days > 0 && years === 0) result += days + ' ' + declension(days, 'день', 'дня', 'дней') + ' ';
+                const dateStr = currentSignatureType === 1 ? '25.06.2026' : '28.01.2026';
+                medcomValue.textContent = '✅ пройдена ' + dateStr + ' (' + result.trim() + ')';
             } else {
-                medcomValue.textContent = '— данные не внесены';
+                medcomValue.textContent = '❌ не пройдена';
             }
         }
 
         // ===== ОБНОВЛЕНИЕ БЛОКА ТАБЕЛЬНОГО НОМЕРА (в модалке) =====
         function updateTabnumBlock() {
             const tabnumValue = document.getElementById('tabnumValue');
-            if (!tabnumValue) return;
+            const tabnumRow = document.getElementById('tabnumRow');
+            if (!tabnumValue || !tabnumRow) return;
             if (currentSignatureType === 1) {
+                tabnumRow.style.display = 'flex';
                 tabnumValue.textContent = TABNUM_GALAGUTSKY;
             } else {
-                tabnumValue.textContent = '— данные не внесены';
+                // У Галагуцкой С.В. табельного номера нет — скрываем всю строку
+                tabnumRow.style.display = 'none';
             }
         }
 
@@ -1751,7 +1760,6 @@
 
             const daysLeft = getDaysUntil(deadline);
 
-            // Показываем напоминание, если до дедлайна осталось <= 30 дней
             if (daysLeft <= REMINDER_DAYS_BEFORE) {
                 reminder.classList.add('visible');
                 let text = '';
@@ -1796,11 +1804,9 @@
             scheduleInterval = setInterval(updateSchedule, 1000);
             setInterval(updateWorkDuration, 60000);
             setInterval(updateMedcomBlock, 60000);
-            // Проверка напоминания раз в минуту
             if (reminderInterval) clearInterval(reminderInterval);
             reminderInterval = setInterval(updateMedcomReminder, 60000);
 
-            // Закрытие модалки "Мои данные" по клику на фон и Esc
             const infoOverlay = document.getElementById('infoModalOverlay');
             if (infoOverlay) infoOverlay.addEventListener('click', e => {
                 if (e.target === infoOverlay) closeInfoModal();
@@ -2219,7 +2225,6 @@
             const shiftInfo = getCurrentShiftInfo(now);
             const shiftStart = shiftInfo.start;
             const shiftEnd = shiftInfo.end;
-            // Блок с текстом смены удален из отображения
             updateShiftTheme();
             updateShiftTotalTimer(now, shiftStart, shiftEnd, shiftInfo);
             updateProgressBar(now, shiftStart, shiftEnd, shiftInfo);
@@ -2542,12 +2547,14 @@
             document.getElementById('btnSignature1').classList.toggle('active', type === 1);
             document.getElementById('btnSignature2').classList.toggle('active', type === 2);
             localStorage.setItem('signatureType', type.toString());
+            updateWorkDuration();
             updateMoneyCounter(new Date());
             updateMedcomBlock();
             updateTabnumBlock();
             updateMedcomReminder();
             checkAndApplyHolidayTheme();
             updateSchedule();
+            if (typeof window.__scheduleRefresh === 'function') window.__scheduleRefresh();
         }
 
         function loadSavedSignatureType() {
@@ -2669,6 +2676,7 @@
             const restAfterRow = document.getElementById('restAfterRow');
             const nextShiftRow = document.getElementById('nextShiftRow');
             const bonusDisplayEl = document.getElementById('bonusDisplay');
+            const bonusRow = document.getElementById('bonusRow');
             const eventRestBeforeRow = document.getElementById('eventRestBeforeRow');
             const eventRestAfterRow = document.getElementById('eventRestAfterRow');
             const eventRestBeforeDisplay = document.getElementById('eventRestBeforeDisplay');
@@ -2917,6 +2925,13 @@
                 return { totalShifts, totalHours, bonus: totalHours * HOURLY_RATE, absentCount, denied: false };
             }
             function updateBonusDisplay() {
+                // Для Галагуцкой С.В. трудовая надбавка не начисляется — скрываем строку
+                if (currentSignatureType === 2) {
+                    if (bonusRow) bonusRow.style.display = 'none';
+                    return;
+                }
+                if (bonusRow) bonusRow.style.display = 'flex';
+
                 const { totalShifts, totalHours, bonus, denied } = calcTotalBonus();
                 if (denied) {
                     bonusDisplayEl.textContent = '❌ НЕ ПОЛОЖЕНА (2+ отсутствия)';
@@ -3536,6 +3551,9 @@
             modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
             timelineClose.addEventListener('click', closeTimeline);
             timelineOverlay.addEventListener('click', e => { if (e.target === timelineOverlay) closeTimeline(); });
+
+            // Экспорт для вызова извне (обновление надбавки при смене подписи)
+            window.__scheduleRefresh = function() { render(); };
 
             // СТАРТ ГРАФИКА
             loadData(currentMonthKey);
