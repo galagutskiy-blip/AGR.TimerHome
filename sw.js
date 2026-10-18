@@ -1,5 +1,5 @@
 /* Service Worker — офлайн-режим для МКС: Таймер смены + счётчик */
-const CACHE = 'mks-timer-v5';   // ← меняй при обновлении файлов (v2, v3...)
+const CACHE = 'mks-timer-v6';   // ← меняй при обновлении файлов (v2, v3...)
 const ASSETS = [
     './',
     './index.html',
