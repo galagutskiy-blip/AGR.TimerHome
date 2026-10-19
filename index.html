@@ -376,26 +376,121 @@
             white-space: nowrap;
         }
 
-        .money-counter-block {
-            margin: 12px 0 8px 0; padding: 8px 14px; border-radius: 40px;
-            background: rgba(255, 215, 0, 0.08);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            display: inline-flex; align-items: center; gap: 8px;
-            font-size: 18px; font-weight: 400; letter-spacing: 0.3px;
-            backdrop-filter: blur(2px); transition: all 0.3s ease;
-            width: auto; justify-content: center;
+        /* ===== Терминал заработка ===== */
+        .terminal-money {
+            font-family: 'Courier New', 'Consolas', monospace;
+            background: #0a0e14;
+            color: #00ff9c;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid #1e3a2f;
+            font-size: 12.5px;
+            margin: 10px 0;
+            box-shadow: inset 0 0 20px rgba(0,255,156,0.05);
+            line-height: 1.5;
+            overflow: hidden;
+            transition: opacity 0.3s ease, background 0.5s ease, border-color 0.5s ease, color 0.5s ease;
         }
-        .money-counter-block .money-label { font-size: 14px; opacity: 0.7; font-weight: 300; }
-        .money-counter-block .money-amount {
-            font-weight: 600; font-variant-numeric: tabular-nums;
-            min-width: 60px; display: inline-block; transition: color 0.3s ease;
+        .terminal-money .term-prompt {
+            color: #4a9eff;
+            font-size: 11px;
+            opacity: 0.8;
+            margin-bottom: 2px;
         }
-        .money-counter-block .money-currency { font-size: 16px; opacity: 0.8; font-weight: 300; }
-        body.night-shift .money-counter-block { background: rgba(255, 215, 0, 0.05); border-color: rgba(255, 215, 0, 0.15); }
-        .shift-total-timer + .money-counter-block { margin-top: 0; }
-        .money-counter-block.hidden { display: none; }
+        .terminal-money .term-line {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .terminal-money .term-label {
+            color: #8aa3c0;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+        .terminal-money .term-amount {
+            color: #00ff9c;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 0 8px rgba(0,255,156,0.5);
+            min-width: 55px;
+            display: inline-block;
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .terminal-money .term-currency {
+            color: #00ff9c;
+            opacity: 0.8;
+            flex-shrink: 0;
+        }
+        .terminal-money .term-max {
+            color: #4a6b5a;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+        .terminal-money .term-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(0,255,156,0.1);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            min-width: 40px;
+        }
+        .terminal-money .term-bar::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: var(--pct, 0%);
+            background: linear-gradient(90deg, #00b86b, #00ff9c);
+            box-shadow: 0 0 8px rgba(0,255,156,0.6);
+            border-radius: 4px;
+            transition: width 1s linear;
+        }
+        .terminal-money .term-cursor {
+            color: #00ff9c;
+            animation: term-blink 1s step-end infinite;
+            flex-shrink: 0;
+        }
+        @keyframes term-blink { 50% { opacity: 0; } }
 
-        /* ===== КНОПКА "МОИ ДАННЫЕ" (внизу приложения) ===== */
+        body.night-shift .terminal-money {
+            border-color: #2a5a3f;
+            box-shadow: inset 0 0 25px rgba(0,255,156,0.08);
+        }
+
+        /* ===== Светлый терминал в дневную смену ===== */
+        body.day-shift .terminal-money {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        body.day-shift .terminal-money .term-prompt { color: #3b82f6; }
+        body.day-shift .terminal-money .term-label { color: #64748b; }
+        body.day-shift .terminal-money .term-amount {
+            color: #16a34a;
+            text-shadow: none;
+        }
+        body.day-shift .terminal-money .term-currency { color: #16a34a; }
+        body.day-shift .terminal-money .term-max { color: #94a3b8; }
+        body.day-shift .terminal-money .term-bar { background: rgba(22, 163, 74, 0.1); }
+        body.day-shift .terminal-money .term-bar::after {
+            background: linear-gradient(90deg, #4ade80, #16a34a);
+            box-shadow: none;
+        }
+        body.day-shift .terminal-money .term-cursor { color: #16a34a; }
+
+        @media (max-width: 420px) {
+            .terminal-money {
+                font-size: 11px;
+                padding: 8px 10px;
+            }
+            .terminal-money .term-amount { min-width: 45px; }
+            .terminal-money .term-label { font-size: 10px; }
+            .terminal-money .term-max { font-size: 10px; }
+        }
+
         .info-toggle-btn {
             display: flex;
             align-items: center;
@@ -431,7 +526,6 @@
             border-color: rgba(116, 192, 252, 0.7);
         }
 
-        /* ===== МОДАЛЬНОЕ ОКНО "МОИ ДАННЫЕ" ===== */
         .info-modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.55);
@@ -492,7 +586,6 @@
         .info-modal-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(52,152,219,0.35); }
         .info-modal-btn:active { transform: translateY(0); }
 
-        /* ===== БЕГУЩАЯ СТРОКА НАПОМИНАНИЯ О МЕДКОМИССИИ ===== */
         .medcom-reminder {
             display: none;
             margin: 10px 0;
@@ -561,8 +654,6 @@
             .shift-total-timer { font-size: 15px; padding: 8px 6px; gap: 4px; }
             .shift-total-timer .time { font-size: 15px; }
             .shift-total-timer .label { font-size: 11px; }
-            .money-counter-block { font-size: 15px; padding: 6px 12px; gap: 5px; }
-            .money-counter-block .money-label { font-size: 12px; }
         }
 
         #timer-app .signature-btn {
@@ -681,7 +772,6 @@
             .signature-row .signature-extra-wrapper input[type="checkbox"] { width: 13px; height: 13px; }
         }
 
-        /* ===== Стили графика смен (изолированы внутри #shift-schedule-app) ===== */
         #shift-schedule-app {
             --bg-app: #f2f6fc; --bg-card: #ffffff; --text-primary: #0b1e33;
             --text-secondary: #1a3350; --text-muted: #406183;
@@ -1330,18 +1420,23 @@
             </div>
         </div>
 
-        <div class="money-counter-block" id="moneyCounterBlock">
-            <span class="money-label">💰 Заработано:</span>
-            <span class="money-amount" id="moneyAmount">0</span>
-            <span class="money-currency">₽</span>
+        <!-- Терминал заработка -->
+        <div class="terminal-money" id="terminalMoney">
+            <div class="term-prompt">user@mks:~$</div>
+            <div class="term-line">
+                <span class="term-label">earn --live</span>
+                <span class="term-amount" id="termMoneyAmount">0</span>
+                <span class="term-currency">₽</span>
+                <span class="term-max" id="termMoneyMax">/ 6050 ₽</span>
+                <span class="term-bar" id="termMoneyBar"></span>
+                <span class="term-cursor">▊</span>
+            </div>
         </div>
 
-        <!-- ===== БЕГУЩАЯ СТРОКА НАПОМИНАНИЯ О МЕДКОМИССИИ ===== -->
         <div class="medcom-reminder" id="medcomReminder">
             <div class="medcom-reminder-inner" id="medcomReminderInner"></div>
         </div>
 
-        <!-- Блок скрыт по запросу -->
         <div class="shift-info" id="shiftInfo" style="display: none;">Смена: --</div>
         
         <div class="progress-container">
@@ -1402,7 +1497,6 @@
             📋 Скопировать подпись ещё раз
         </button>
 
-        <!-- ===== КНОПКА "МОИ ДАННЫЕ" (В САМОМ НИЗУ ПРИЛОЖЕНИЯ) ===== -->
         <button class="info-toggle-btn" id="infoToggleBtn" onclick="openInfoModal()">
             <span>ℹ️ Мои данные (стаж, медкомиссия, табельный)</span>
             <span class="arrow">▲</span>
@@ -1417,7 +1511,6 @@
         <ul class="schedule-list" id="scheduleList"></ul>
     </div>
 
-    <!-- ===== ГРАФИК СМЕН (ВСТРОЕННЫЙ МОДУЛЬ) ===== -->
     <div id="shift-schedule-app">
         <div class="subhead">
             <div>
@@ -1517,7 +1610,6 @@
             <span>🟨 1 смена · 🟦 2 смена · 🟪 мероприятие · ✕ отсутствие</span>
         </div>
 
-        <!-- Модалка редактирования дня -->
         <div class="modal-overlay" id="modalOverlay">
             <div class="modal" id="editModal">
                 <h2>✏️ Редактировать день</h2>
@@ -1550,7 +1642,6 @@
             </div>
         </div>
 
-        <!-- Модалка с 24-часовой шкалой -->
         <div class="timeline-overlay" id="timelineOverlay">
             <div class="timeline-modal" id="timelineModal">
                 <h2>🕐 Рабочие часы</h2>
@@ -1569,7 +1660,6 @@
         </div>
     </div>
 
-    <!-- ===== МОДАЛЬНОЕ ОКНО "МОИ ДАННЫЕ" ===== -->
     <div class="info-modal-overlay" id="infoModalOverlay">
         <div class="info-modal" id="infoModal">
             <button class="info-modal-close" onclick="closeInfoModal()">✕</button>
@@ -1595,21 +1685,16 @@
     </div>
 
     <script>
-        // ===== НАСТРОЙКА ВКОНТАКТЕ =====
         const VK_GROUP_URL = 'https://vk.com/jmkaluga';
 
-        // ===== ДАННЫЕ МЕДКОМИССИИ И ТАБЕЛЬНОГО НОМЕРА =====
-        // Галагуцкий Е.В.: медкомиссия пройдена 25.06.2026. Следующая — до 25.06.2027.
         const MEDCOM_PASSED_DATE_GALAGUTSKY = new Date('2026-06-25T00:00:00');
         const MEDCOM_NEXT_DEADLINE_GALAGUTSKY = new Date('2027-06-25T00:00:00');
         const TABNUM_GALAGUTSKY = '44001640';
 
-        // Галагуцкая С.В.: медкомиссия пройдена 28.01.2026. Следующая — до 28.01.2027.
         const MEDCOM_PASSED_DATE_GALAGUTSKAYA = new Date('2026-01-28T00:00:00');
         const MEDCOM_NEXT_DEADLINE_GALAGUTSKAYA = new Date('2027-01-28T00:00:00');
-        const TABNUM_GALAGUTSKAYA = null; // табельного номера нет
+        const TABNUM_GALAGUTSKAYA = null;
 
-        // За сколько дней до дедлайна начинать напоминание (30 дней = за месяц)
         const REMINDER_DAYS_BEFORE = 30;
 
         let timerInterval = null;
@@ -1669,23 +1754,35 @@
         function updateWorkDuration() {
             const el = document.getElementById('workDurationValue');
             if (!el) return;
+
             const startDate = getWorkStartDate();
             const now = new Date();
+
+            const day = String(startDate.getDate()).padStart(2, '0');
+            const month = String(startDate.getMonth() + 1).padStart(2, '0');
+            const year = startDate.getFullYear();
+            const startDateStr = `${day}.${month}.${year}`;
+
             const diffMs = now - startDate;
-            if (diffMs < 0) { el.textContent = 'ещё не начал(а)'; return; }
+            if (diffMs < 0) {
+                el.textContent = `${startDateStr} (ещё не начал(а))`;
+                return;
+            }
+
             const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
             const years = Math.floor(totalDays / 365);
             const months = Math.floor((totalDays % 365) / 30);
             const days = (totalDays % 365) % 30;
+
             let result = '';
             if (years > 0) result += years + ' ' + declension(years, 'год', 'года', 'лет') + ' ';
             if (months > 0) result += months + ' ' + declension(months, 'месяц', 'месяца', 'месяцев') + ' ';
             if (days > 0 && years === 0) result += days + ' ' + declension(days, 'день', 'дня', 'дней') + ' ';
             result += '(' + totalDays + ' ' + declension(totalDays, 'день', 'дня', 'дней') + ')';
-            el.textContent = result;
+
+            el.textContent = `${startDateStr} — ${result.trim()}`;
         }
 
-        // ===== ОБНОВЛЕНИЕ БЛОКА МЕДКОМИССИИ (в модалке) =====
         function updateMedcomBlock() {
             const medcomValue = document.getElementById('medcomValue');
             if (!medcomValue) return;
@@ -1710,7 +1807,6 @@
             }
         }
 
-        // ===== ОБНОВЛЕНИЕ БЛОКА ТАБЕЛЬНОГО НОМЕРА (в модалке) =====
         function updateTabnumBlock() {
             const tabnumValue = document.getElementById('tabnumValue');
             const tabnumRow = document.getElementById('tabnumRow');
@@ -1719,12 +1815,10 @@
                 tabnumRow.style.display = 'flex';
                 tabnumValue.textContent = TABNUM_GALAGUTSKY;
             } else {
-                // У Галагуцкой С.В. табельного номера нет — скрываем всю строку
                 tabnumRow.style.display = 'none';
             }
         }
 
-        // ===== ЛОГИКА БЕГУЩЕЙ СТРОКИ НАПОМИНАНИЯ О МЕДКОМИССИИ =====
         function getMedcomDeadline() {
             if (currentSignatureType === 1) return MEDCOM_NEXT_DEADLINE_GALAGUTSKY;
             return MEDCOM_NEXT_DEADLINE_GALAGUTSKAYA;
@@ -1777,7 +1871,6 @@
             }
         }
 
-        // ===== ОТКРЫТИЕ/ЗАКРЫТИЕ МОДАЛКИ "МОИ ДАННЫЕ" =====
         function openInfoModal() {
             updateWorkDuration();
             updateMedcomBlock();
@@ -1807,6 +1900,22 @@
             if (reminderInterval) clearInterval(reminderInterval);
             reminderInterval = setInterval(updateMedcomReminder, 60000);
 
+            // Эффект печати первой суммы в терминале
+            setTimeout(() => {
+                const termAmount = document.getElementById('termMoneyAmount');
+                if (termAmount && currentSignatureType === 1) {
+                    const shiftInfo = getCurrentShiftInfo(new Date());
+                    const isPT = document.getElementById('partTimeCheckbox').checked;
+                    const max = getMoneyMax(shiftInfo.shift, isPT);
+                    if (shiftInfo.isActive && max > 0) {
+                        const total = shiftInfo.end - shiftInfo.start;
+                        const elapsed = Math.max(0, new Date() - shiftInfo.start);
+                        const target = Math.round(Math.min(1, elapsed / total) * max);
+                        typeNumber(termAmount, target, 1200);
+                    }
+                }
+            }, 500);
+
             const infoOverlay = document.getElementById('infoModalOverlay');
             if (infoOverlay) infoOverlay.addEventListener('click', e => {
                 if (e.target === infoOverlay) closeInfoModal();
@@ -1817,6 +1926,17 @@
 
             console.log('✅ Таймер смены загружен (автономный режим)');
         });
+
+        function typeNumber(el, target, duration = 1200) {
+            if (!el) return;
+            const start = performance.now();
+            function step(t) {
+                const p = Math.min(1, (t - start) / duration);
+                el.textContent = Math.round(target * p).toLocaleString('ru-RU');
+                if (p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
 
         function openVKGroup() {
             window.open(VK_GROUP_URL, '_blank');
@@ -1904,19 +2024,42 @@
         }
 
         function updateMoneyCounter(now) {
-            const moneyBlock = document.getElementById('moneyCounterBlock');
-            if (currentSignatureType === 2) { if (moneyBlock) moneyBlock.classList.add('hidden'); return; }
-            if (moneyBlock) moneyBlock.classList.remove('hidden');
+            const termBlock  = document.getElementById('terminalMoney');
+            const termAmount = document.getElementById('termMoneyAmount');
+            const termMax    = document.getElementById('termMoneyMax');
+            const termBar    = document.getElementById('termMoneyBar');
+
+            // --- Скрываем счётчик на 2-й подписи ---
+            if (currentSignatureType === 2) {
+                if (termBlock)  termBlock.style.display = 'none';
+                return;
+            }
+            if (termBlock)  termBlock.style.display = 'block';
+
             const shiftInfo = getCurrentShiftInfo(now);
             const isPartTime = document.getElementById('partTimeCheckbox').checked;
             const maxMoney = getMoneyMax(shiftInfo.shift, isPartTime);
-            const el = document.getElementById('moneyAmount');
-            if (!el) return;
-            if (!shiftInfo.isActive || !shiftInfo.start || !shiftInfo.end) { el.textContent = '0'; return; }
-            const total = shiftInfo.end - shiftInfo.start;
-            const elapsed = Math.max(0, now - shiftInfo.start);
-            const progress = Math.min(1, elapsed / total);
-            el.textContent = Math.round(progress * maxMoney);
+
+            let current = 0;
+
+            if (shiftInfo.isActive && shiftInfo.start && shiftInfo.end && maxMoney > 0) {
+                const total    = shiftInfo.end - shiftInfo.start;
+                const elapsed  = Math.max(0, now - shiftInfo.start);
+                const progress = Math.min(1, elapsed / total);
+                current = Math.round(progress * maxMoney);
+            }
+
+            // --- Терминал ---
+            if (termAmount) {
+                termAmount.textContent = current.toLocaleString('ru-RU');
+            }
+            if (termMax && maxMoney > 0) {
+                termMax.textContent = `/ ${maxMoney.toLocaleString('ru-RU')} ₽`;
+            }
+            if (termBar) {
+                const pct = maxMoney > 0 ? Math.min(100, (current / maxMoney) * 100) : 0;
+                termBar.style.setProperty('--pct', pct + '%');
+            }
         }
 
         function generateSignature() {
@@ -2577,7 +2720,6 @@
             });
         }
 
-        // ===== ГРАФИК СМЕН + ПОДРАБОТКИ + МЕРОПРИЯТИЯ =====
         (function() {
             const MONTHS = {
                 8: {
@@ -2925,7 +3067,6 @@
                 return { totalShifts, totalHours, bonus: totalHours * HOURLY_RATE, absentCount, denied: false };
             }
             function updateBonusDisplay() {
-                // Для Галагуцкой С.В. трудовая надбавка не начисляется — скрываем строку
                 if (currentSignatureType === 2) {
                     if (bonusRow) bonusRow.style.display = 'none';
                     return;
@@ -3176,7 +3317,6 @@
                     gridEl.appendChild(empty);
                 }
 
-                // ----- СТАТИСТИКА -----
                 const extraKeys = Object.keys(extras);
                 extraCountEl.textContent = extraKeys.length;
 
@@ -3552,10 +3692,8 @@
             timelineClose.addEventListener('click', closeTimeline);
             timelineOverlay.addEventListener('click', e => { if (e.target === timelineOverlay) closeTimeline(); });
 
-            // Экспорт для вызова извне (обновление надбавки при смене подписи)
             window.__scheduleRefresh = function() { render(); };
 
-            // СТАРТ ГРАФИКА
             loadData(currentMonthKey);
             updateMonthTitle();
             updateMonthNavButtons();
