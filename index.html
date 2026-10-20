@@ -2470,9 +2470,8 @@
             const halfTime = new Date(shiftStart.getTime() + totalShiftDuration / 2);
             const halfTimeString = halfTime.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
             if (halfShiftLabel) halfShiftLabel.textContent = halfTimeString;
-            progressPercentage.textContent = percentage < 50
-                ? `${percentage.toFixed(1)}% выполнено · Середина в ${halfTimeString}`
-                : `${percentage.toFixed(1)}% выполнено · Можно меняться (${halfTimeString})`;
+            // ИЗМЕНЕНО: убран текст "Можно меняться"
+            progressPercentage.textContent = `${percentage.toFixed(1)}% выполнено`;
         }
 
         function showTimeToNextShift(now) {
