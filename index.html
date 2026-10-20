@@ -1916,6 +1916,19 @@
                 }
             }, 500);
 
+            // === ОБРАБОТКА ЯРЛЫКА "Сформировать подпись" ===
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('action') === 'signature') {
+                setTimeout(() => {
+                    generateSignatureAndCopy();
+                    // Очищаем параметр из URL, чтобы при перезагрузке не срабатывало снова
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                }, 400);
+            }
+            // =================================================
+
             const infoOverlay = document.getElementById('infoModalOverlay');
             if (infoOverlay) infoOverlay.addEventListener('click', e => {
                 if (e.target === infoOverlay) closeInfoModal();
@@ -2470,7 +2483,6 @@
             const halfTime = new Date(shiftStart.getTime() + totalShiftDuration / 2);
             const halfTimeString = halfTime.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
             if (halfShiftLabel) halfShiftLabel.textContent = halfTimeString;
-            // ИЗМЕНЕНО: убран текст "Можно меняться"
             progressPercentage.textContent = `${percentage.toFixed(1)}% выполнено`;
         }
 
