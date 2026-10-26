@@ -357,7 +357,7 @@
             font-size: 18px; font-weight: 600; text-align: center;
             padding: 10px 10px; margin: 5px 0 15px 0; border-radius: 12px;
             background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(0,0,0,0.06);
+            border: 2px solid rgba(0,0,0,0.06);
             letter-spacing: 0.5px; display: flex;
             justify-content: space-between; align-items: center;
             gap: 6px; flex-wrap: wrap;
@@ -735,42 +735,127 @@
             .schedule-desc { font-size: 12px; margin-left: 10px; }
         }
 
-        .signature-extra-wrapper {
-            display: flex; align-items: center; justify-content: center;
-            gap: 6px; margin: 8px 0 4px 0; font-size: 13px;
-            user-select: none; cursor: pointer;
-        }
-        .signature-extra-wrapper input[type="checkbox"] {
-            width: 16px; height: 16px; accent-color: #3498db;
-            cursor: pointer; flex-shrink: 0;
-        }
-        .signature-extra-wrapper label { cursor: pointer; white-space: nowrap; font-size: 13px; }
-        body.night-shift .signature-extra-wrapper { color: #ccc; }
-        body.day-shift .signature-extra-wrapper { color: #333; }
-
+        /* ===== НОВЫЙ БЛОК: Стили для кнопки подписи и тумблера ===== */
         .signature-row {
-            display: flex; align-items: center; gap: 8px;
-            margin: 15px 0 5px 0;
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            background: rgba(52, 152, 219, 0.08); /* Легкий фон */
+            padding: 8px 10px 8px 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            margin: 15px 0 10px 0;
+            gap: 10px;
+            transition: background 0.3s ease;
         }
+
         .signature-row .signature-btn {
-            flex: 2; margin: 0; font-size: 13px;
-            padding: 10px 8px; min-width: 0;
+            flex: 1;
+            margin: 0;
+            padding: 10px 14px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 12px;
+            background: white;
+            color: #2980b9;
+            border: 1px solid #3498db;
+            box-shadow: 0 2px 5px rgba(52, 152, 219, 0.1);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
         }
-        .signature-row .signature-extra-wrapper {
-            flex: 0 0 auto; margin: 0; padding: 0 4px; gap: 4px;
+        .signature-row .signature-btn:hover {
+            background: #e3f2fd;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
         }
-        .signature-row .signature-extra-wrapper label { font-size: 12px; }
-        .signature-row .signature-extra-wrapper input[type="checkbox"] { width: 15px; height: 15px; }
-        @media (max-width: 400px) {
-            .signature-row .signature-btn { font-size: 12px; padding: 10px 6px; }
-            .signature-row .signature-extra-wrapper label { font-size: 11px; }
+        .signature-row .signature-btn:active {
+            transform: translateY(0);
         }
-        @media (max-width: 350px) {
-            .signature-row { gap: 4px; }
-            .signature-row .signature-btn { font-size: 11px; padding: 8px 4px; }
-            .signature-row .signature-extra-wrapper label { font-size: 10px; }
-            .signature-row .signature-extra-wrapper input[type="checkbox"] { width: 13px; height: 13px; }
+
+        .switch-wrapper {
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            cursor: pointer; 
+            user-select: none;
+            flex-shrink: 0;
         }
+
+        .switch-label {
+            font-size: 13px; 
+            font-weight: 600; 
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .switch {
+            position: relative; 
+            display: inline-block;
+            width: 42px; 
+            height: 24px; 
+            flex-shrink: 0;
+            margin: 0;
+        }
+        .switch input { 
+            opacity: 0; 
+            width: 0; 
+            height: 0; 
+        }
+        .slider {
+            position: absolute; 
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1; 
+            transition: .3s;
+            border-radius: 24px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .slider:before {
+            position: absolute; 
+            content: "";
+            height: 18px; 
+            width: 18px;
+            left: 3px; 
+            bottom: 3px;
+            background-color: white; 
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .switch input:checked + .slider { 
+            background-color: #2ecc71; /* Зеленый цвет при включении */
+        }
+        .switch input:checked + .slider:before { 
+            transform: translateX(18px); 
+        }
+
+        /* Адаптация для темной темы (ночная смена) */
+        body.night-shift .signature-row {
+            background: rgba(52, 152, 219, 0.15);
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+        body.night-shift .signature-row .signature-btn {
+            background: #1e1e3e;
+            color: #74c0fc;
+            border-color: #4a76a8;
+        }
+        body.night-shift .signature-row .signature-btn:hover {
+            background: #2a2a5a;
+        }
+        body.night-shift .switch-label {
+            color: #e0e0e0;
+        }
+        body.night-shift .slider {
+            background-color: #4a5568;
+        }
+        body.night-shift .switch input:checked + .slider { 
+            background-color: #2ecc71; 
+        }
+        /* ===== КОНЕЦ НОВОГО БЛОКА ===== */
 
         #shift-schedule-app {
             --bg-app: #f2f6fc; --bg-card: #ffffff; --text-primary: #0b1e33;
@@ -1420,7 +1505,6 @@
             </div>
         </div>
 
-        <!-- Терминал заработка -->
         <div class="terminal-money" id="terminalMoney">
             <div class="term-prompt">user@mks:~$</div>
             <div class="term-line">
@@ -1438,7 +1522,7 @@
         </div>
 
         <div class="shift-info" id="shiftInfo" style="display: none;">Смена: --</div>
-        
+
         <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
             <div class="progress-milestone" style="left: 25%;" id="milestone1" title="10:20"></div>
@@ -1478,15 +1562,20 @@
             </button>
         </div>
 
+        <!-- ===== НОВЫЙ БЛОК: Подпись и тумблер ===== -->
         <div class="signature-row">
             <button class="signature-btn" onclick="generateSignatureAndCopy()">
-                📝 Сформировать подпись
+                📝 Подпись
             </button>
-            <div class="signature-extra-wrapper">
-                <input type="checkbox" id="partTimeCheckbox">
-                <label for="partTimeCheckbox">➕ Подр.</label>
-            </div>
+            <label class="switch-wrapper">
+                <span class="switch-label">Подраб.</span>
+                <div class="switch">
+                    <input type="checkbox" id="partTimeCheckbox">
+                    <span class="slider"></span>
+                </div>
+            </label>
         </div>
+        <!-- ===== КОНЕЦ НОВОГО БЛОКА ===== -->
 
         <button class="vk-open-btn" onclick="openVKGroup()">
             🌐 Открыть ВКонтакте
@@ -1538,6 +1627,42 @@
                 <span class="stats-label">📊 Подработок:</span>
                 <span class="stats-value">
                     <span id="extraCount" style="font-weight:600;font-size:15px;">0</span>
+                </span>
+            </div>
+
+            <div class="stats-row" id="shiftsCountRow">
+                <span class="stats-label">🌞 Дневных (1):</span>
+                <span class="stats-value">
+                    <span id="countShift1" style="font-weight:600;font-size:15px;">0</span>
+                </span>
+            </div>
+
+            <div class="stats-row" id="shiftsCountRow2">
+                <span class="stats-label">🌙 Вечерних (2):</span>
+                <span class="stats-value">
+                    <span id="countShift2" style="font-weight:600;font-size:15px;">0</span>
+                </span>
+            </div>
+
+            <div class="stats-row" id="shiftsTotalRow">
+                <span class="stats-label">📅 Всего смен:</span>
+                <span class="stats-value">
+                    <span id="countShiftsTotal" style="font-weight:600;font-size:15px;">0</span>
+                    <span id="countShiftsHours" style="font-size:12px;opacity:0.7;">(0 ч)</span>
+                </span>
+            </div>
+
+            <div class="stats-row" id="weekendsRow">
+                <span class="stats-label">🏖️ Выходных:</span>
+                <span class="stats-value">
+                    <span id="countWeekends" style="font-weight:600;font-size:15px;">0</span>
+                </span>
+            </div>
+
+            <div class="stats-row" id="absentsRow" style="display:none;">
+                <span class="stats-label">✕ Отсутствий:</span>
+                <span class="stats-value">
+                    <span id="countAbsents" style="font-weight:600;font-size:15px;">0</span>
                 </span>
             </div>
 
@@ -1683,7 +1808,6 @@
             <button class="info-modal-btn" onclick="closeInfoModal()">Закрыть</button>
         </div>
     </div>
-
     <script>
         const VK_GROUP_URL = 'https://vk.com/jmkaluga';
 
@@ -1921,7 +2045,6 @@
             if (urlParams.get('action') === 'signature') {
                 setTimeout(() => {
                     generateSignatureAndCopy();
-                    // Очищаем параметр из URL, чтобы при перезагрузке не срабатывало снова
                     if (window.history && window.history.replaceState) {
                         window.history.replaceState({}, document.title, window.location.pathname);
                     }
@@ -2009,25 +2132,28 @@
             document.body.removeChild(textArea);
         }
 
+        // === ИЗМЕНЕНО: определение смены в подписи за 1,5 часа до начала ===
+        // 1 смена: 05:50–17:50 (350–1070 мин), 2 смена: 17:50–05:50
         function getNextShiftForGalagutskySignature(now) {
             const totalMinutes = now.getHours() * 60 + now.getMinutes();
             let shiftType, shiftEmoji;
-            if (totalMinutes >= 380 && totalMinutes < 1100) { shiftType = '1 смена'; shiftEmoji = '☀️'; }
+            if (totalMinutes >= 350 && totalMinutes < 1070) { shiftType = '1 смена'; shiftEmoji = '☀️'; }
             else { shiftType = '2 смена'; shiftEmoji = '🌙'; }
             return { shiftType, shiftEmoji, date: new Date(now) };
         }
 
         function getShiftTimeRange(now) {
             const totalMinutes = now.getHours() * 60 + now.getMinutes();
-            if (totalMinutes >= 380 && totalMinutes < 1100) return { start: '07:20', end: '19:20' };
+            if (totalMinutes >= 350 && totalMinutes < 1070) return { start: '07:20', end: '19:20' };
             else return { start: '19:20', end: '07:20' };
         }
 
         function getNextShiftForGalagutskayaSignature(now) {
             const totalMinutes = now.getHours() * 60 + now.getMinutes();
-            if (totalMinutes >= 380 && totalMinutes < 1100) return { shiftTime: '07:20-19:20', shiftEmoji: '☀️' };
+            if (totalMinutes >= 350 && totalMinutes < 1070) return { shiftTime: '07:20-19:20', shiftEmoji: '☀️' };
             else return { shiftTime: '19:20-07:20', shiftEmoji: '🌙' };
         }
+        // ================================================================
 
         function getMoneyMax(shiftType, isPartTime) {
             if (isPartTime) return 9350;
@@ -2042,7 +2168,6 @@
             const termMax    = document.getElementById('termMoneyMax');
             const termBar    = document.getElementById('termMoneyBar');
 
-            // --- Скрываем счётчик на 2-й подписи ---
             if (currentSignatureType === 2) {
                 if (termBlock)  termBlock.style.display = 'none';
                 return;
@@ -2062,7 +2187,6 @@
                 current = Math.round(progress * maxMoney);
             }
 
-            // --- Терминал ---
             if (termAmount) {
                 termAmount.textContent = current.toLocaleString('ru-RU');
             }
@@ -2355,8 +2479,10 @@
                 elTime.textContent = calculateTimeRemaining(now, nextStart);
                 elElapsed.textContent = '00:00:00';
                 timerBlock.style.background = 'rgba(128,128,128,0.15)';
-                elTime.style.color = '#aaa';
-                elElapsed.style.color = '#aaa';
+                const isNightIdle = document.body.classList.contains('night-shift');
+                elTime.style.color = isNightIdle ? '#aaa' : '#555';
+                elElapsed.style.color = isNightIdle ? '#aaa' : '#555';
+                timerBlock.style.borderColor = 'transparent';
                 updateMoneyCounter(now);
                 return;
             }
@@ -2367,9 +2493,12 @@
             elTime.textContent = calculateTimeRemaining(now, shiftEnd);
             elElapsed.textContent = formatDuration(elapsed);
             const color = getShiftColor(progress);
-            elTime.style.color = color;
-            elElapsed.style.color = color;
+            const isNight = document.body.classList.contains('night-shift');
+            // Текст всегда контрастный: ночью — светлый, днём — чёрный
+            elTime.style.color = isNight ? '#e0e0e0' : '#000';
+            elElapsed.style.color = isNight ? '#e0e0e0' : '#000';
             timerBlock.style.background = 'rgba(0,0,0,0.03)';
+            // Цвет меняет только рамка
             timerBlock.style.borderColor = color;
             updateMoneyCounter(now);
         }
@@ -3102,6 +3231,41 @@
                     bonusDisplayEl.style.fontSize = '15px';
                 }
             }
+
+            // ===== НОВОЕ: статистика смен =====
+            function updateShiftsStats() {
+                let c1 = 0, c2 = 0, cAbsent = 0, cWeekend = 0;
+
+                for (let d = 1; d <= currentDaysInMonth(); d++) {
+                    const t = getShiftType(d);
+                    if (t === '1') c1++;
+                    else if (t === '2') c2++;
+                    else if (t === 'absent') cAbsent++;
+                    else cWeekend++;
+                }
+
+                const total = c1 + c2;
+                const totalHours = total * SHIFT_HOURS;
+
+                const el1 = document.getElementById('countShift1');
+                const el2 = document.getElementById('countShift2');
+                const elT = document.getElementById('countShiftsTotal');
+                const elH = document.getElementById('countShiftsHours');
+                const elW = document.getElementById('countWeekends');
+                const elA = document.getElementById('countAbsents');
+                const rowA = document.getElementById('absentsRow');
+
+                if (el1) el1.textContent = c1;
+                if (el2) el2.textContent = c2;
+                if (elT) elT.textContent = total;
+                if (elH) elH.textContent = `(${totalHours} ч)`;
+                if (elW) elW.textContent = cWeekend;
+                if (elA) elA.textContent = cAbsent;
+
+                if (rowA) rowA.style.display = cAbsent > 0 ? 'flex' : 'none';
+            }
+            // ===================================
+
             function getToday() {
                 const now = new Date();
                 if (now.getFullYear() === currentYear() && now.getMonth() === currentMonthIndexJS()) return now.getDate();
@@ -3438,6 +3602,7 @@
                 }
 
                 updateBonusDisplay();
+                updateShiftsStats();
             }
 
             function openModal(day) {
