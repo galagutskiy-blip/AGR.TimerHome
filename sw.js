@@ -1,5 +1,6 @@
-/* Service Worker — офлайн-режим для МКС: Таймер смены + счётчик */
-const CACHE = 'mks-timer-v11';   // ← меняй при обновлении файлов (v2, v3...)
+/* Service Worker — офлайн-режим + уведомление об обновлении
+   Версия кэша: меняй при каждом релизе (v11 → v12 → ...) */
+const CACHE = 'mks-timer-v12';
 const ASSETS = [
     './',
     './index.html',
@@ -8,7 +9,8 @@ const ASSETS = [
     './icons/icon-512.png'
 ];
 
-/* Install: кэшируем по одному — падение одного файла не сломает весь install */
+/* Install: кэшируем по одному — падение одного файла не сломает весь install.
+   ❗ НЕ вызываем skipWaiting() — ждём команды от страницы. */
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE).then(cache =>
@@ -17,7 +19,7 @@ self.addEventListener('install', event => {
                     cache.add(url).catch(err => console.warn('Не закэшировано:', url, err))
                 )
             )
-        ).then(() => self.skipWaiting())
+        )
     );
 });
 
@@ -30,11 +32,18 @@ self.addEventListener('activate', event => {
     );
 });
 
+/* Message: страница просит активироваться по кнопке «Обновить» */
+self.addEventListener('message', event => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
+});
+
 /* Fetch: stale-while-revalidate + fallback на index.html для SPA-роутинга */
 self.addEventListener('fetch', event => {
     if (event.request.method !== 'GET') return;
     const url = new URL(event.request.url);
-    if (url.origin !== location.origin) return;   // внешние домены (VK и т.п.) не трогаем
+    if (url.origin !== location.origin) return;
 
     event.respondWith(
         caches.match(event.request).then(cached => {
