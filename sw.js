@@ -1,6 +1,6 @@
 /* Service Worker — офлайн-режим + уведомление об обновлении
    Версия кэша: меняй при каждом релизе (v11 → v12 → ...) */
-const CACHE = 'mks-timer-v13';
+const CACHE = 'mks-timer-v1';
 const ASSETS = [
     './',
     './index.html',
