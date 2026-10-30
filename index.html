@@ -740,7 +740,7 @@
             display: flex; 
             align-items: center; 
             justify-content: space-between;
-            background: rgba(52, 152, 219, 0.08); /* Легкий фон */
+            background: rgba(52, 152, 219, 0.08);
             padding: 8px 10px 8px 12px;
             border-radius: 16px;
             border: 1px solid rgba(52, 152, 219, 0.2);
@@ -827,13 +827,12 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .switch input:checked + .slider { 
-            background-color: #2ecc71; /* Зеленый цвет при включении */
+            background-color: #2ecc71;
         }
         .switch input:checked + .slider:before { 
             transform: translateX(18px); 
         }
 
-        /* Адаптация для темной темы (ночная смена) */
         body.night-shift .signature-row {
             background: rgba(52, 152, 219, 0.15);
             border-color: rgba(52, 152, 219, 0.3);
@@ -1489,8 +1488,11 @@
         <div class="internet-text">Проверка...</div>
         <div class="internet-speed"></div>
     </div>
+    <div class="sw-update-banner" id="swUpdateBanner" hidden>
+        <span>🔄 Доступно обновление</span>
+        <button onclick="applySwUpdate()">Обновить</button>
+    </div>
     <div id="sticky-current-time" class="current-time">Текущее время: --:--:--</div>
-
     <div id="timer-app" class="app-container">
         <h2>⏱️ Таймер смены</h2>
 
@@ -1562,7 +1564,6 @@
             </button>
         </div>
 
-        <!-- ===== НОВЫЙ БЛОК: Подпись и тумблер ===== -->
         <div class="signature-row">
             <button class="signature-btn" onclick="generateSignatureAndCopy()">
                 📝 Подпись
@@ -1575,7 +1576,6 @@
                 </div>
             </label>
         </div>
-        <!-- ===== КОНЕЦ НОВОГО БЛОКА ===== -->
 
         <button class="vk-open-btn" onclick="openVKGroup()">
             🌐 Открыть ВКонтакте
@@ -2024,7 +2024,6 @@
             if (reminderInterval) clearInterval(reminderInterval);
             reminderInterval = setInterval(updateMedcomReminder, 60000);
 
-            // Эффект печати первой суммы в терминале
             setTimeout(() => {
                 const termAmount = document.getElementById('termMoneyAmount');
                 if (termAmount && currentSignatureType === 1) {
@@ -2040,7 +2039,6 @@
                 }
             }, 500);
 
-            // === ОБРАБОТКА ЯРЛЫКА "Сформировать подпись" ===
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('action') === 'signature') {
                 setTimeout(() => {
@@ -2050,7 +2048,6 @@
                     }
                 }, 400);
             }
-            // =================================================
 
             const infoOverlay = document.getElementById('infoModalOverlay');
             if (infoOverlay) infoOverlay.addEventListener('click', e => {
@@ -2132,8 +2129,6 @@
             document.body.removeChild(textArea);
         }
 
-        // === ИЗМЕНЕНО: определение смены в подписи за 1,5 часа до начала ===
-        // 1 смена: 05:50–17:50 (350–1070 мин), 2 смена: 17:50–05:50
         function getNextShiftForGalagutskySignature(now) {
             const totalMinutes = now.getHours() * 60 + now.getMinutes();
             let shiftType, shiftEmoji;
@@ -2153,7 +2148,6 @@
             if (totalMinutes >= 350 && totalMinutes < 1070) return { shiftTime: '07:20-19:20', shiftEmoji: '☀️' };
             else return { shiftTime: '19:20-07:20', shiftEmoji: '🌙' };
         }
-        // ================================================================
 
         function getMoneyMax(shiftType, isPartTime) {
             if (isPartTime) return 9350;
@@ -2494,11 +2488,9 @@
             elElapsed.textContent = formatDuration(elapsed);
             const color = getShiftColor(progress);
             const isNight = document.body.classList.contains('night-shift');
-            // Текст всегда контрастный: ночью — светлый, днём — чёрный
             elTime.style.color = isNight ? '#e0e0e0' : '#000';
             elElapsed.style.color = isNight ? '#e0e0e0' : '#000';
             timerBlock.style.background = 'rgba(0,0,0,0.03)';
-            // Цвет меняет только рамка
             timerBlock.style.borderColor = color;
             updateMoneyCounter(now);
         }
@@ -3232,7 +3224,6 @@
                 }
             }
 
-            // ===== НОВОЕ: статистика смен =====
             function updateShiftsStats() {
                 let c1 = 0, c2 = 0, cAbsent = 0, cWeekend = 0;
 
@@ -3264,7 +3255,6 @@
 
                 if (rowA) rowA.style.display = cAbsent > 0 ? 'flex' : 'none';
             }
-            // ===================================
 
             function getToday() {
                 const now = new Date();
@@ -3882,12 +3872,73 @@
     </script>
 
     <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js', { scope: './' })
-                .then(reg => console.log('✅ SW зарегистрирован:', reg.scope))
-                .catch(err => console.error('❌ Ошибка SW:', err));
-        });
+    /* ===== SERVICE WORKER REGISTRATION + UPDATE HANDLING ===== */
+    let swRegistration = null;
+    let waitingWorker = null;
+
+    async function registerSW() {
+        if (!('serviceWorker' in navigator)) return;
+
+        try {
+            swRegistration = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+            console.log('✅ SW зарегистрирован:', swRegistration.scope);
+
+            if (swRegistration.waiting && navigator.serviceWorker.controller) {
+                waitingWorker = swRegistration.waiting;
+                showUpdateBanner();
+            }
+
+            swRegistration.addEventListener('updatefound', () => {
+                const newWorker = swRegistration.installing;
+                if (!newWorker) return;
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        waitingWorker = newWorker;
+                        showUpdateBanner();
+                    }
+                });
+            });
+
+            setInterval(() => {
+                if (swRegistration) swRegistration.update();
+            }, 60 * 60 * 1000);
+
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (refreshing) return;
+                refreshing = true;
+                window.location.reload();
+            });
+
+            navigator.serviceWorker.ready.then(() => {
+                const ind = document.getElementById('internetIndicator');
+                if (ind) {
+                    ind.classList.add('sw-ready');
+                    ind.title = 'Офлайн-режим готов';
+                }
+            });
+        } catch (err) {
+            console.error('❌ Ошибка SW:', err);
+        }
+    }
+
+    function showUpdateBanner() {
+        const banner = document.getElementById('swUpdateBanner');
+        if (banner) banner.hidden = false;
+    }
+
+    function applySwUpdate() {
+        if (waitingWorker) {
+            waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+        } else {
+            window.location.reload();
+        }
+    }
+
+    if (document.readyState === 'complete') {
+        registerSW();
+    } else {
+        window.addEventListener('load', registerSW);
     }
     </script>
 </body>
